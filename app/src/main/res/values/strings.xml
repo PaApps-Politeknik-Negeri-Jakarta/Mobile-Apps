@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">PaApps
+    </string>
+    <string name="welcome_login">Welcome Back</string>
+    <string name="welcome_login_1">Login back into your account</string>
+    <string name="welcome_login_2">Log In</string>
+    <string name="welcome_login_3">Login</string>
+    <string name="welcome_login_4">Don\'t have an account yet ?</string>
+    <string name="welcome_login_5">Register Now</string>
+    <string name="welcome_login_6">Forgot Password ?</string>
+
+    <string name="welcome_regis">Welcome</string>
+    <string name="welcome_regis_1">Signup into your account</string>
+    <string name="welcome_regis_2">Full Name</string>
+    <string name="welcome_regis_3">Email</string>
+    <string name="welcome_regis_4">Password</string>
+    <string name="welcome_regis_5">Sign Up</string>
+    <string name="welcome_regis_6">Already have an account ?</string>
+
+    <string name="welcome_reset">Forgot Password</string>
+    <string name="welcome_reset_1">Enter your email below to reset your password</string>
+    <string name="welcome_reset_2">Submit</string>
+    <string name="welcome_reset_3">Reset your password</string>
+    <string name="welcome_reset_4">Reset</string>
+    <string name="welcome_reset_5">Back</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
