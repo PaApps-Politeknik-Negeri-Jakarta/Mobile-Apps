@@ -93,10 +93,11 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.edRegisEmail.text.toString()
             val password = binding.edRegisPassword.text.toString()
             val confirmPassword = binding.edRegisConpassword.text.toString()
+            val statusKu = binding.tvStatus.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && fullname.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    registerUser(email, password, fullname)
+                    registerUser(email, password, fullname, statusKu)
                 } else {
                     showFailedDialog("Confirm password and password do not match")
                 }
@@ -106,7 +107,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun registerUser(email: String, password: String, fullname: String) {
+    private fun registerUser(email: String, password: String, fullname: String, statusKu: String) {
         databaseReference.child("users").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -121,6 +122,7 @@ class RegisterActivity : AppCompatActivity() {
                                         val userData = HashMap<String, Any>()
                                         userData["full name"] = fullname
                                         userData["email"] = email
+                                        userData["role"] = statusKu
                                         databaseReference.child("users").child(userId).setValue(userData)
                                             .addOnCompleteListener { dbTask ->
                                                 if (dbTask.isSuccessful) {

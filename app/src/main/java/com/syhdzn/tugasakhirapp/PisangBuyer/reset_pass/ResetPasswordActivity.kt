@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.reset_pass
+package com.syhdzn.tugasakhirapp.PisangBuyer.reset_pass
 
 import android.annotation.SuppressLint
 import android.content.Intent

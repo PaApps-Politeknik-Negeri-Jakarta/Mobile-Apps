@@ -52,7 +52,7 @@
         android:background="@drawable/bg_rounded"
         android:backgroundTint="@color/color_2"
         android:text="@string/welcome_regis_5"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:fontFamily="@font/font_2_extralight"
+        android:fontFamily="@font/font_3_reguler"
         android:text="@string/welcome_regis_1"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -115,9 +115,9 @@
         android:id="@+id/regis_inpt_fullname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/bg_color_input"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -169,9 +169,9 @@
         android:id="@+id/regis_inpt_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/bg_color_input"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -223,9 +223,9 @@
         android:id="@+id/regis_inpt_pass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/bg_color_input"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -279,7 +279,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_visible" />
+                app:srcCompat="@drawable/ic_invisible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
@@ -288,9 +288,9 @@
         android:id="@+id/regis_inpt_conpass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/bg_color_input"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -344,8 +344,18 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_visible" />
+                app:srcCompat="@drawable/ic_invisible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="Pembeli"
+        android:textColor="@color/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

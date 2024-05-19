@@ -2,8 +2,11 @@ package com.syhdzn.tugasakhirapp.login
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.InputType
 import android.view.View
 import android.view.WindowInsets
@@ -15,15 +18,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.register.RegisterActivity
-import com.syhdzn.tugasakhirapp.reset_pass.ResetPasswordActivity
-import com.syhdzn.tugasakhirapp.dashboard.DashboardActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
+import com.syhdzn.tugasakhirapp.PisangSeller.dashboard.SellerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityLoginBinding
+import com.syhdzn.tugasakhirapp.register.RegisterActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.reset_pass.ResetPasswordActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         setupKeyboardClosing()
         setupView()
@@ -87,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.resetnow.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, ResetPasswordActivity ::class.java))
+            startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
             finish()
         }
 
@@ -98,12 +109,62 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Login berhasil
-                    showSuccessDialog("Login Successful")
+                    checkUserRole(email)
                 } else {
                     // Login gagal
                     showInvalidDialog("Invalid email or password")
                 }
             }
+    }
+
+    private fun checkUserRole(email: String) {
+        setupLoading()
+        val query = databaseReference.child("users").orderByChild("email").equalTo(email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (userSnapshot in dataSnapshot.children) {
+                        val role = userSnapshot.child("role").getValue(String::class.java)
+                        // Lakukan pengecekan role di sini
+                        if (role != null) {
+                            when (role) {
+                                "Pembeli" -> {
+                                    // Pengguna memiliki peran Pembeli
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        showSuccessDialogBuyer("Login Successful")
+                                        hideLoading()
+                                    }, 1000)
+
+                                }
+                                "Penjual" -> {
+                                    // Pengguna memiliki peran Penjual
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        showSuccessDialogSeller("Login Successful as Seller")
+                                        hideLoading()
+                                    }, 1000)
+
+                                }
+                                else -> {
+                                    // Role tidak dikenali
+                                    showErrorDialog("Unknown role")
+                                }
+                            }
+                        } else {
+                            // Role pengguna tidak ditemukan
+                            showErrorDialog("User role not found")
+                        }
+                    }
+                } else {
+                    // Email pengguna tidak ditemukan di database
+                    showErrorDialog("User not found")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle pembatalan query
+                showErrorDialog("Database error: ${databaseError.message}")
+            }
+        })
     }
 
     private fun showInvalidDialog(message: String) {
@@ -120,16 +181,44 @@ class LoginActivity : AppCompatActivity() {
         Dialog.show()
     }
 
-    private fun showSuccessDialog(message: String) {
+    private fun showSuccessDialogBuyer(message: String) {
         val dialog = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
         dialog.setContentText(message)
         dialog.setCancelable(false)
         dialog.setConfirmClickListener {
-            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+            startActivity(Intent(this@LoginActivity, BuyerDashboardActivity::class.java))
             finish()
         }
         dialog.show()
     }
+
+    private fun showSuccessDialogSeller(message: String) {
+        val dialog = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        dialog.setContentText(message)
+        dialog.setCancelable(false)
+        dialog.setConfirmClickListener {
+            startActivity(Intent(this@LoginActivity, SellerDashboardActivity::class.java))
+            finish()
+        }
+        dialog.show()
+    }
+
+    private fun setupLoading() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
+        pDialog.titleText = "Loading"
+        pDialog.setCancelable(false)
+        pDialog.show()
+    }
+
+    private fun hideLoading() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
+        pDialog.titleText = "Loading"
+        pDialog.setCancelable(false)
+        pDialog.hide()
+    }
+
 
     private fun showEmptyDialog(message: String) {
         val dialog = SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)

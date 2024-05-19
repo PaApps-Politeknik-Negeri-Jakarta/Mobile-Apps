@@ -1,10 +1,9 @@
-package com.syhdzn.tugasakhirapp.camera
+package com.syhdzn.tugasakhirapp.PisangBuyer.camera
 
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -24,7 +23,7 @@ import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentCameraBinding
-import com.syhdzn.tugasakhirapp.proses.ProcessActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.proses.ProcessActivity
 import com.syhdzn.tugasakhirapp.utils.createFile
 import com.syhdzn.tugasakhirapp.utils.showToast
 import com.syhdzn.tugasakhirapp.utils.uriToFile

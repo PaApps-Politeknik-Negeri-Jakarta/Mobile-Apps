@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.dashboard
+package com.syhdzn.tugasakhirapp.PisangBuyer.dashboard
 
 import android.content.Intent
 import android.os.Build
@@ -10,15 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-import com.syhdzn.tugasakhirapp.camera.CameraFragment
-import com.syhdzn.tugasakhirapp.cart.CartFragment
-import com.syhdzn.tugasakhirapp.home.HomeFragment
+import com.syhdzn.tugasakhirapp.PisangBuyer.camera.CameraFragment
+import com.syhdzn.tugasakhirapp.PisangBuyer.cart.CartFragment
+import com.syhdzn.tugasakhirapp.PisangBuyer.home.HomeFragment
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.user_acc.UserFragment
+import com.syhdzn.tugasakhirapp.PisangBuyer.user_acc.UserFragment
 import com.syhdzn.tugasakhirapp.databinding.ActivityDashboardBinding
 
 
-class DashboardActivity : AppCompatActivity() {
+class BuyerDashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private var fragment: Fragment? = null
@@ -104,7 +104,7 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, BuyerDashboardActivity::class.java)
         startActivity(intent)
     }
 }

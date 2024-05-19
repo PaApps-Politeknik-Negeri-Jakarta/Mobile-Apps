@@ -11,6 +11,8 @@
         android:id="@+id/imageView16"
         android:layout_width="313dp"
         android:layout_height="170dp"
+        android:backgroundTint="@color/color_3"
+        android:tint="@color/color_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

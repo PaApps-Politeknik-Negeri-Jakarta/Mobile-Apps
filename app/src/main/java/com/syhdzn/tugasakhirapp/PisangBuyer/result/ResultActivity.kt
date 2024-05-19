@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.result
+package com.syhdzn.tugasakhirapp.PisangBuyer.result
 
 import android.content.Intent
 import android.net.Uri
@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.syhdzn.tugasakhirapp.dashboard.DashboardActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
@@ -44,7 +44,7 @@ class ResultActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, BuyerDashboardActivity::class.java)
         startActivity(intent)
     }
 }

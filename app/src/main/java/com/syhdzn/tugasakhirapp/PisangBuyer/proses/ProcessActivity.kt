@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.proses
+package com.syhdzn.tugasakhirapp.PisangBuyer.proses
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.dashboard.DashboardActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityProcessBinding
-import com.syhdzn.tugasakhirapp.result.ResultActivity
+import com.syhdzn.tugasakhirapp.PisangBuyer.result.ResultActivity
 import org.tensorflow.lite.Interpreter
 import java.io.File
 import java.io.FileInputStream
@@ -242,7 +242,7 @@ class ProcessActivity : AppCompatActivity() {
         val btnNo = customDialogView.findViewById<Button>(R.id.btn_no)
 
         btnYes.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
+            val intent = Intent(this, BuyerDashboardActivity::class.java)
             intent.putExtra("switchToFragment", "DetectionFragment")
             intent.putExtra("selectMenuItem", R.id.cam)
             startActivity(intent)
@@ -294,7 +294,7 @@ class ProcessActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, BuyerDashboardActivity::class.java)
         startActivity(intent)
     }
 }
