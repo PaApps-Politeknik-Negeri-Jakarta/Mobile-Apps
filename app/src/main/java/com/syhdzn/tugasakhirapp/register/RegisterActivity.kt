@@ -35,76 +35,11 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
-
         databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         setupKeyboardClosing()
         setupView()
         setupAction()
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setupKeyboardClosing() {
-        val rootLayout = findViewById<View>(android.R.id.content)
-        rootLayout.setOnTouchListener { _, _ ->
-            currentFocus?.let { focusedView ->
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(focusedView.windowToken, 0)
-                focusedView.clearFocus()
-            }
-            false
-        }
-    }
-
-    private fun setupView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun setupAction() {
-        val edLoginPassword = binding.edRegisPassword
-        val icShowPass = binding.icShowPass
-
-        val edConfirmPassword = binding.edRegisConpassword
-        val icShowConPass = binding.icShowConpass
-
-        binding.icShowPass.setOnClickListener{
-            togglePasswordVisibility(edLoginPassword, icShowPass)
-        }
-
-        binding.icShowConpass.setOnClickListener{
-            togglePasswordVisibility(edConfirmPassword, icShowConPass)
-        }
-
-        binding.loginnow.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
-        binding.btnRegis.setOnClickListener {
-            val fullname = binding.edRegisFullname.text.toString()
-            val email = binding.edRegisEmail.text.toString()
-            val password = binding.edRegisPassword.text.toString()
-            val confirmPassword = binding.edRegisConpassword.text.toString()
-            val statusKu = binding.tvStatus.text.toString()
-
-            if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && fullname.isNotEmpty()) {
-                if (password == confirmPassword) {
-                    registerUser(email, password, fullname, statusKu)
-                } else {
-                    showFailedDialog("Confirm password and password do not match")
-                }
-            } else {
-                showEmptyDialog("Please enter empty form")
-            }
-        }
     }
 
     private fun registerUser(email: String, password: String, fullname: String, statusKu: String) {
@@ -147,6 +82,69 @@ class RegisterActivity : AppCompatActivity() {
             })
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupKeyboardClosing() {
+        val rootLayout = findViewById<View>(android.R.id.content)
+        rootLayout.setOnTouchListener { _, _ ->
+            currentFocus?.let { focusedView ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(focusedView.windowToken, 0)
+                focusedView.clearFocus()
+            }
+            false
+        }
+    }
+
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
+
+    private fun setupAction() {
+        val edLoginPassword = binding.edRegisPassword
+        val icShowPass = binding.icShowPass
+
+        val edConfirmPassword = binding.edRegisConpassword
+        val icShowConPass = binding.icShowConpass
+
+        binding.icShowPass.setOnClickListener {
+            togglePasswordVisibility(edLoginPassword, icShowPass)
+        }
+
+        binding.icShowConpass.setOnClickListener {
+            togglePasswordVisibility(edConfirmPassword, icShowConPass)
+        }
+
+        binding.loginnow.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        binding.btnRegis.setOnClickListener {
+            val fullname = binding.edRegisFullname.text.toString()
+            val email = binding.edRegisEmail.text.toString()
+            val password = binding.edRegisPassword.text.toString()
+            val confirmPassword = binding.edRegisConpassword.text.toString()
+            val statusKu = binding.tvStatus.text.toString()
+
+            if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && fullname.isNotEmpty()) {
+                if (password == confirmPassword) {
+                    registerUser(email, password, fullname, statusKu)
+                } else {
+                    showFailedDialog("Confirm password and password do not match")
+                }
+            } else {
+                showEmptyDialog("Please enter empty form")
+            }
+        }
+    }
 
     private fun showFailedDialog(message: String) {
         val Dialog = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

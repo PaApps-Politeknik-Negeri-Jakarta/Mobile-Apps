@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.result
+package com.syhdzn.tugasakhirapp.pisang_buyer.result
 
 import android.content.Intent
 import android.net.Uri
@@ -7,8 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityResultBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 
 class ResultActivity : AppCompatActivity() {
 
@@ -19,24 +19,27 @@ class ResultActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        setupWindowInsets()
+
+        displayResults()
+    }
+
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
 
-        // Ambil label dan imageUriString dari Intent
+    private fun displayResults() {
         val label = intent.getStringExtra("label")
-
-        val labeljenis = intent.getStringExtra("jenisPisang")
-
+        val labelJenis = intent.getStringExtra("jenisPisang")
         val imageUriString = intent.getStringExtra("imageUri")
 
-        // Tampilkan label di UI
         binding.tvKualitas.text = "Kualitas pisang terdeteksi: $label"
-        binding.tvJenis.text = "Jenis pisang terdeteksi: $labeljenis"
+        binding.tvJenis.text = "Jenis pisang terdeteksi: $labelJenis"
 
-        // Tampilkan gambar di ImageView
         if (!imageUriString.isNullOrEmpty()) {
             binding.ivItemResult.setImageURI(Uri.parse(imageUriString))
         }

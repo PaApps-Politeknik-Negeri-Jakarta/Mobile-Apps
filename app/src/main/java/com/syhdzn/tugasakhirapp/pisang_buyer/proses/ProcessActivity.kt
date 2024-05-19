@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.proses
+package com.syhdzn.tugasakhirapp.pisang_buyer.proses
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityProcessBinding
-import com.syhdzn.tugasakhirapp.PisangBuyer.result.ResultActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.result.ResultActivity
 import org.tensorflow.lite.Interpreter
 import java.io.File
 import java.io.FileInputStream
@@ -32,15 +32,19 @@ class ProcessActivity : AppCompatActivity() {
     private lateinit var interpreterJenisPisang: Interpreter
     private var imageFile: File? = null
 
+    companion object {
+        private const val img_width = 150
+        private const val img_height = 150
+        private const val NUM_CLASSES = 3
+        private const val NUM_CLASSES_JENIS_PISANG = 6
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProcessBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Load TensorFlow Lite model
         interpreter = Interpreter(loadModelFile())
-
-        // Load TensorFlow Lite model for banana type detection
         interpreterJenisPisang = Interpreter(loadModelFileJenisPisang())
 
         handleImage()
@@ -70,13 +74,19 @@ class ProcessActivity : AppCompatActivity() {
             }
             else -> null
         }
-
-        if (imageFile == null) {
-        }
     }
 
     private fun handleGalleryImage(imageUri: Uri) {
         binding.ivItemProcess.setImageURI(imageUri)
+    }
+
+    private fun setupAction() {
+        binding.btnProcessImage.setOnClickListener {
+            handleImageProses()
+        }
+        binding.ivBgReplace.setOnClickListener {
+            showDialogReplace()
+        }
     }
 
     private fun handleImageProses() {
@@ -106,9 +116,6 @@ class ProcessActivity : AppCompatActivity() {
             }
             else -> null
         }
-
-        if (imageFile == null) {
-        }
     }
 
     private fun handleGalleryImageProses(imageUri: Uri) {
@@ -118,24 +125,14 @@ class ProcessActivity : AppCompatActivity() {
         detectJenisPisang(bitmap)
     }
 
-    private fun setupAction() {
-        binding.btnProcessImage.setOnClickListener {
-            handleImageProses()
-        }
-
-        binding.ivBgReplace.setOnClickListener {
-            showDialogReplace()
-        }
-    }
-
     private fun detectJenisPisang(bitmap: Bitmap): String {
         val resizedBitmap = Bitmap.createScaledBitmap(bitmap, img_width, img_height, true)
         val byteBuffer = convertBitmapToByteBuffer(resizedBitmap)
         val outputScores = Array(1) { FloatArray(NUM_CLASSES_JENIS_PISANG) }
         interpreterJenisPisang.run(byteBuffer, outputScores)
         val result = outputScores[0]
-
         val maxIndex = result.indices.maxByOrNull { result[it] } ?: -1
+
         return when (maxIndex) {
             0 -> "pisang_ambon"
             1 -> "pisang_barangan"
@@ -147,14 +144,12 @@ class ProcessActivity : AppCompatActivity() {
         }
     }
 
-
     private fun processImage(bitmap: Bitmap) {
         val resizedBitmap = Bitmap.createScaledBitmap(bitmap, img_width, img_height, true)
         val byteBuffer = convertBitmapToByteBuffer(resizedBitmap)
         val outputScores = Array(1) { FloatArray(NUM_CLASSES) }
         interpreter.run(byteBuffer, outputScores)
         val result = outputScores[0]
-
         val maxIndex = result.indices.maxByOrNull { result[it] } ?: -1
         val label = when (maxIndex) {
             0 -> "Overripe"
@@ -170,87 +165,73 @@ class ProcessActivity : AppCompatActivity() {
         setupLoading()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, ResultActivity::class.java)
-            // Deteksi jenis pisang
-            val jenisPisang = detectJenisPisang(bitmap)
-            intent.putExtra("jenisPisang", jenisPisang)
-
-            intent.putExtra("label", label)
-            if (imageUriString != null) {
-                intent.putExtra("imageUri", imageUriString)
-            } else if (isBackCamera && imageFile != null) {
-                val imageUri = FileProvider.getUriForFile(this, "$packageName.fileprovider", imageFile)
-                intent.putExtra("imageUri", imageUri.toString())
+            val intent = Intent(this, ResultActivity::class.java).apply {
+                putExtra("jenisPisang", detectJenisPisang(bitmap))
+                putExtra("label", label)
+                imageUriString?.let { putExtra("imageUri", it) }
+                if (isBackCamera && imageFile != null) {
+                    val imageUri = FileProvider.getUriForFile(this@ProcessActivity, "$packageName.fileprovider", imageFile)
+                    putExtra("imageUri", imageUri.toString())
+                }
             }
-
             startActivity(intent)
-
             hideLoading()
         }, 1000)
     }
 
-
-
     private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
-        val byteBuffer = ByteBuffer.allocateDirect(4 * img_width * img_height * 3)
-        byteBuffer.order(ByteOrder.nativeOrder())
-
-        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, img_width, img_height, true)
-        val pixels = IntArray(img_width * img_height)
-        resizedBitmap.getPixels(pixels, 0, resizedBitmap.width, 0, 0, resizedBitmap.width, resizedBitmap.height)
-
-        for (pixel in pixels) {
-            val r = (pixel shr 16 and 0xFF)
-            val g = (pixel shr 8 and 0xFF)
-            val b = (pixel and 0xFF)
-
-            byteBuffer.putFloat(r / 255f)
-            byteBuffer.putFloat(g / 255f)
-            byteBuffer.putFloat(b / 255f)
+        val byteBuffer = ByteBuffer.allocateDirect(4 * img_width * img_height * 3).apply {
+            order(ByteOrder.nativeOrder())
         }
+        val pixels = IntArray(img_width * img_height)
+        bitmap.getPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
 
+        pixels.forEach { pixel ->
+            val r = (pixel shr 16 and 0xFF) / 255f
+            val g = (pixel shr 8 and 0xFF) / 255f
+            val b = (pixel and 0xFF) / 255f
+            byteBuffer.putFloat(r)
+            byteBuffer.putFloat(g)
+            byteBuffer.putFloat(b)
+        }
         return byteBuffer
     }
 
     private fun loadModelFile(): ByteBuffer {
-        val modelFileDescriptor = assets.openFd("banana_detectionkualitas_model.tflite")
-        val inputStream = FileInputStream(modelFileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = modelFileDescriptor.startOffset
-        val declaredLength = modelFileDescriptor.declaredLength
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-    }
-    private fun loadModelFileJenisPisang(): ByteBuffer {
-        val modelFileDescriptor = assets.openFd("banana_detectionjenis_model.tflite")
-        val inputStream = FileInputStream(modelFileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = modelFileDescriptor.startOffset
-        val declaredLength = modelFileDescriptor.declaredLength
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+        return assets.openFd("banana_detectionkualitas_model.tflite").run {
+            FileInputStream(fileDescriptor).channel.map(
+                FileChannel.MapMode.READ_ONLY,
+                startOffset,
+                declaredLength
+            )
+        }
     }
 
+    private fun loadModelFileJenisPisang(): ByteBuffer {
+        return assets.openFd("banana_detectionjenis_model.tflite").run {
+            FileInputStream(fileDescriptor).channel.map(
+                FileChannel.MapMode.READ_ONLY,
+                startOffset,
+                declaredLength
+            )
+        }
+    }
 
     private fun showDialogReplace() {
-        val builder = AlertDialog.Builder(this)
-        val inflater = layoutInflater
-        val customDialogView = inflater.inflate(R.layout.costum_dialog_replace, null)
+        val customDialogView = layoutInflater.inflate(R.layout.costum_dialog_replace, null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(customDialogView)
+            .create()
 
-        builder.setView(customDialogView)
-        val dialog = builder.create()
-
-        val btnYes = customDialogView.findViewById<Button>(R.id.btn_yes)
-        val btnNo = customDialogView.findViewById<Button>(R.id.btn_no)
-
-        btnYes.setOnClickListener {
-            val intent = Intent(this, BuyerDashboardActivity::class.java)
-            intent.putExtra("switchToFragment", "DetectionFragment")
-            intent.putExtra("selectMenuItem", R.id.cam)
-            startActivity(intent)
-            dialog.dismiss()
+        customDialogView.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+            startActivity(Intent(this, BuyerDashboardActivity::class.java).apply {
+                putExtra("switchToFragment", "DetectionFragment")
+                putExtra("selectMenuItem", R.id.cam)
+            })
             dialog.dismiss()
         }
 
-        btnNo.setOnClickListener {
+        customDialogView.findViewById<Button>(R.id.btn_no).setOnClickListener {
             dialog.dismiss()
         }
 
@@ -269,32 +250,25 @@ class ProcessActivity : AppCompatActivity() {
     }
 
     private fun setupLoading() {
-        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.show()
+        SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            show()
+        }
     }
 
     private fun hideLoading() {
-        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.hide()
-    }
-
-
-    companion object {
-        private const val img_width = 150
-        private const val img_height = 150
-        private const val NUM_CLASSES = 3
-        private const val NUM_CLASSES_JENIS_PISANG = 6
+        SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            hide()
+        }
     }
 
     override fun onBackPressed() {
+        startActivity(Intent(this, BuyerDashboardActivity::class.java))
         super.onBackPressed()
-        val intent = Intent(this, BuyerDashboardActivity::class.java)
-        startActivity(intent)
     }
 }

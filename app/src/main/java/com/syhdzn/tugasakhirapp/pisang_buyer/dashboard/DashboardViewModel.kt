@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.dashboard
+package com.syhdzn.tugasakhirapp.pisang_buyer.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

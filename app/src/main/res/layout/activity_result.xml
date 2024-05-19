@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PisangBuyer.result.ResultActivity">
+    tools:context=".pisang_buyer.result.ResultActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

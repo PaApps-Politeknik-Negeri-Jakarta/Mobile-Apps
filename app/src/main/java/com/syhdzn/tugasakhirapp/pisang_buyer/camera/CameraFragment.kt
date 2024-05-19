@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.camera
+package com.syhdzn.tugasakhirapp.pisang_buyer.camera
 
 import android.Manifest
 import android.app.Activity
@@ -13,17 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentCameraBinding
-import com.syhdzn.tugasakhirapp.PisangBuyer.proses.ProcessActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.proses.ProcessActivity
 import com.syhdzn.tugasakhirapp.utils.createFile
 import com.syhdzn.tugasakhirapp.utils.showToast
 import com.syhdzn.tugasakhirapp.utils.uriToFile
@@ -37,16 +34,12 @@ class CameraFragment : Fragment() {
 
     private lateinit var binding: FragmentCameraBinding
     private lateinit var cameraExecutor: ExecutorService
-
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
     private var capturedFile: File? = null
     private var isFlashEnabled = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCameraBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -62,6 +55,11 @@ class CameraFragment : Fragment() {
         checkCameraPermissionAndStart()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        releaseResources()
+    }
+
     private fun setupViews() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -71,35 +69,19 @@ class CameraFragment : Fragment() {
             btnCamera.setOnClickListener { takePhoto() }
             btnGallery.setOnClickListener { startGallery() }
             btnSwitch.setOnClickListener {
-                cameraSelector =
-                    if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-                    else CameraSelector.DEFAULT_BACK_CAMERA
+                cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                    CameraSelector.DEFAULT_FRONT_CAMERA
+                } else {
+                    CameraSelector.DEFAULT_BACK_CAMERA
+                }
                 startCamera()
             }
         }
-
-        binding.btnFlash.setOnClickListener {
-            toggleFlash()
-        }
+        binding.btnFlash.setOnClickListener { toggleFlash() }
     }
-
-    private fun toggleFlash() {
-        isFlashEnabled = !isFlashEnabled
-        val flashMode = if (isFlashEnabled) ImageCapture.FLASH_MODE_ON else ImageCapture.FLASH_MODE_OFF
-        imageCapture?.flashMode = flashMode
-
-        // Ubah gambar logo flash
-        val flashIconResId = if (isFlashEnabled) R.drawable.ic_flash else R.drawable.ic_flash_off
-        binding.btnFlash.setImageResource(flashIconResId)
-    }
-
 
     private fun checkCameraPermissionAndStart() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera()
         } else {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST)
@@ -108,69 +90,55 @@ class CameraFragment : Fragment() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity())
-
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also { it.setSurfaceProvider(binding.viewFinder.surfaceProvider) }
-
+            val preview = Preview.Builder().build().also { it.setSurfaceProvider(binding.viewFinder.surfaceProvider) }
             imageCapture = ImageCapture.Builder().build()
 
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(requireActivity(), cameraSelector, preview, imageCapture)
             } catch (e: Exception) {
-                requireActivity().showToast("Failed to Show Camera")
+                requireActivity().showToast("Failed to show camera")
             }
         }, ContextCompat.getMainExecutor(requireActivity()))
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == CAMERA_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
             } else {
-                requireActivity().showToast("Izin kamera ditolak.")
+                requireActivity().showToast("Camera permission denied.")
             }
         }
     }
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-
         val photoFile = createFile(requireContext().applicationContext)
-
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
         setupLoading()
 
-        imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(requireContext()),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    requireActivity().showToast("Failed To Take Image.")
-                    hideLoading()
-                }
-
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    handleImageSaved(photoFile)
-                }
+        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
+            override fun onError(exc: ImageCaptureException) {
+                requireActivity().showToast("Failed to take image.")
+                hideLoading()
             }
-        )
+
+            override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                handleImageSaved(photoFile)
+            }
+        })
     }
 
     private fun handleImageSaved(photoFile: File) {
         hideLoading()
-
-        val intent = Intent(requireContext(), ProcessActivity::class.java)
-        intent.putExtra("picture", photoFile)
-        intent.putExtra("isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+        val intent = Intent(requireContext(), ProcessActivity::class.java).apply {
+            putExtra("picture", photoFile)
+            putExtra("isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+        }
         startActivity(intent)
     }
 
@@ -183,19 +151,17 @@ class CameraFragment : Fragment() {
         launcherIntentGallery.launch(chooser)
     }
 
-    private val launcherIntentGallery = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    private val launcherIntentGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val selectedImage: Uri? = result.data?.data
             selectedImage?.let {
                 setupLoading()
                 capturedFile = uriToFile(selectedImage, requireContext())
                 Handler(Looper.getMainLooper()).postDelayed({
-                    val intent = Intent(requireContext(), ProcessActivity::class.java)
-                    intent.putExtra("imageUri", selectedImage.toString())
+                    val intent = Intent(requireContext(), ProcessActivity::class.java).apply {
+                        putExtra("imageUri", selectedImage.toString())
+                    }
                     startActivity(intent)
-
                     hideLoading()
                 }, 1000)
             }
@@ -204,29 +170,34 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private fun toggleFlash() {
+        isFlashEnabled = !isFlashEnabled
+        val flashMode = if (isFlashEnabled) ImageCapture.FLASH_MODE_ON else ImageCapture.FLASH_MODE_OFF
+        imageCapture?.flashMode = flashMode
+
+        val flashIconResId = if (isFlashEnabled) R.drawable.ic_flash else R.drawable.ic_flash_off
+        binding.btnFlash.setImageResource(flashIconResId)
+    }
+
     private fun setupLoading() {
-        val pDialog = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.show()
+        SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            show()
+        }
     }
 
     private fun hideLoading() {
-        val pDialog = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.hide()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        releaseResources()
+        SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            hide()
+        }
     }
 
     private fun releaseResources() {
         cameraExecutor.shutdown()
     }
 }
-

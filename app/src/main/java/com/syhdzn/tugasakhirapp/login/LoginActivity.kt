@@ -24,11 +24,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.PisangBuyer.dashboard.BuyerDashboardActivity
-import com.syhdzn.tugasakhirapp.PisangSeller.dashboard.SellerDashboardActivity
 import com.syhdzn.tugasakhirapp.databinding.ActivityLoginBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.register.RegisterActivity
-import com.syhdzn.tugasakhirapp.PisangBuyer.reset_pass.ResetPasswordActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.reset_pass.ResetPasswordActivity
+import com.syhdzn.tugasakhirapp.pisang_seller.dashboard.SellerDashboardActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -46,6 +46,58 @@ class LoginActivity : AppCompatActivity() {
         setupKeyboardClosing()
         setupView()
         setupAction()
+    }
+
+    private fun loginUser(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    checkUserRole(email)
+                } else {
+                    showInvalidDialog("Invalid email or password")
+                }
+            }
+    }
+
+    private fun checkUserRole(email: String) {
+        setupLoading()
+        val query = databaseReference.child("users").orderByChild("email").equalTo(email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (userSnapshot in dataSnapshot.children) {
+                        val role = userSnapshot.child("role").getValue(String::class.java)
+                        if (role != null) {
+                            when (role) {
+                                "Pembeli" -> {
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        showSuccessDialogBuyer("Login Successful")
+                                        hideLoading()
+                                    }, 1000)
+                                }
+                                "Penjual" -> {
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        showSuccessDialogSeller("Login Successful as Seller")
+                                        hideLoading()
+                                    }, 1000)
+                                }
+                                else -> {
+                                    showErrorDialog("Unknown role")
+                                }
+                            }
+                        } else {
+                            showErrorDialog("User role not found")
+                        }
+                    }
+                } else {
+                    showErrorDialog("User not found")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                showErrorDialog("Database error: ${databaseError.message}")
+            }
+        })
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -88,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.icShowPass.setOnClickListener{
+        binding.icShowPass.setOnClickListener {
             togglePasswordVisibility(edLoginPassword, icShowPass)
         }
 
@@ -101,70 +153,36 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
             finish()
         }
-
     }
 
-    private fun loginUser(email: String, password: String) {
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Login berhasil
-                    checkUserRole(email)
-                } else {
-                    // Login gagal
-                    showInvalidDialog("Invalid email or password")
-                }
-            }
+    private fun togglePasswordVisibility(edLoginPassword: EditText, icShowPass: ImageView) {
+        val inputType = if (edLoginPassword.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            InputType.TYPE_CLASS_TEXT
+        } else {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
+
+        edLoginPassword.inputType = inputType
+        val font = ResourcesCompat.getFont(this, R.font.font_3_reguler)
+        edLoginPassword.typeface = font
+        icShowPass.setImageResource(if (inputType == InputType.TYPE_CLASS_TEXT) R.drawable.ic_visible else R.drawable.ic_invisible)
+        edLoginPassword.setSelection(edLoginPassword.text.length)
     }
 
-    private fun checkUserRole(email: String) {
-        setupLoading()
-        val query = databaseReference.child("users").orderByChild("email").equalTo(email)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (userSnapshot in dataSnapshot.children) {
-                        val role = userSnapshot.child("role").getValue(String::class.java)
-                        // Lakukan pengecekan role di sini
-                        if (role != null) {
-                            when (role) {
-                                "Pembeli" -> {
-                                    // Pengguna memiliki peran Pembeli
-                                    Handler(Looper.getMainLooper()).postDelayed({
-                                        showSuccessDialogBuyer("Login Successful")
-                                        hideLoading()
-                                    }, 1000)
+    private fun setupLoading() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
+        pDialog.titleText = "Loading"
+        pDialog.setCancelable(false)
+        pDialog.show()
+    }
 
-                                }
-                                "Penjual" -> {
-                                    // Pengguna memiliki peran Penjual
-                                    Handler(Looper.getMainLooper()).postDelayed({
-                                        showSuccessDialogSeller("Login Successful as Seller")
-                                        hideLoading()
-                                    }, 1000)
-
-                                }
-                                else -> {
-                                    // Role tidak dikenali
-                                    showErrorDialog("Unknown role")
-                                }
-                            }
-                        } else {
-                            // Role pengguna tidak ditemukan
-                            showErrorDialog("User role not found")
-                        }
-                    }
-                } else {
-                    // Email pengguna tidak ditemukan di database
-                    showErrorDialog("User not found")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle pembatalan query
-                showErrorDialog("Database error: ${databaseError.message}")
-            }
-        })
+    private fun hideLoading() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
+        pDialog.titleText = "Loading"
+        pDialog.setCancelable(false)
+        pDialog.hide()
     }
 
     private fun showInvalidDialog(message: String) {
@@ -203,43 +221,11 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun setupLoading() {
-        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.show()
-    }
-
-    private fun hideLoading() {
-        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        pDialog.progressHelper.barColor = Color.parseColor("#06283D")
-        pDialog.titleText = "Loading"
-        pDialog.setCancelable(false)
-        pDialog.hide()
-    }
-
-
     private fun showEmptyDialog(message: String) {
         val dialog = SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
         dialog.setContentText(message)
         dialog.setCancelable(false)
         dialog.setCustomImage(R.drawable.ic_warning)
         dialog.show()
-    }
-
-
-    private fun togglePasswordVisibility(edLoginPassword: EditText, icShowPass: ImageView) {
-        val inputType = if (edLoginPassword.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-            InputType.TYPE_CLASS_TEXT
-        } else {
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        }
-
-        edLoginPassword.inputType = inputType
-        val font = ResourcesCompat.getFont(this, R.font.font_3_reguler)
-        edLoginPassword.typeface = font
-        icShowPass.setImageResource(if (inputType == InputType.TYPE_CLASS_TEXT) R.drawable.ic_visible else R.drawable.ic_invisible)
-        edLoginPassword.setSelection(edLoginPassword.text.length)
     }
 }

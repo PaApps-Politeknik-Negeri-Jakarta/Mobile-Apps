@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.home
+package com.syhdzn.tugasakhirapp.pisang_buyer.home
 
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +14,7 @@ import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
 
@@ -47,6 +48,7 @@ class HomeFragment : Fragment() {
 
         setupViewPager()
         setupPageIndicator()
+        observeCurrentPage()
     }
 
     private fun setupViewPager() {
@@ -59,7 +61,6 @@ class HomeFragment : Fragment() {
                 startAutoScroll()
             }
         })
-        observeCurrentPage()
     }
 
     private fun observeCurrentPage() {
@@ -99,5 +100,10 @@ class HomeFragment : Fragment() {
 
     private fun stopAutoScroll() {
         autoScrollHandler.removeCallbacks(autoScrollRunnable)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopAutoScroll()
     }
 }

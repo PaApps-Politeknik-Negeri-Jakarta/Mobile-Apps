@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.dashboard
+package com.syhdzn.tugasakhirapp.pisang_buyer.dashboard
 
 import android.content.Intent
 import android.os.Build
@@ -10,22 +10,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-import com.syhdzn.tugasakhirapp.PisangBuyer.camera.CameraFragment
-import com.syhdzn.tugasakhirapp.PisangBuyer.cart.CartFragment
-import com.syhdzn.tugasakhirapp.PisangBuyer.home.HomeFragment
+import com.syhdzn.tugasakhirapp.pisang_buyer.camera.CameraFragment
+import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
+import com.syhdzn.tugasakhirapp.pisang_buyer.home.HomeFragment
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.PisangBuyer.user_acc.UserFragment
-import com.syhdzn.tugasakhirapp.databinding.ActivityDashboardBinding
-
+import com.syhdzn.tugasakhirapp.databinding.ActivityBuyerDashboardBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.user_acc.UserFragment
 
 class BuyerDashboardActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDashboardBinding
+    private lateinit var binding: ActivityBuyerDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private var fragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        binding = ActivityBuyerDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
@@ -35,19 +34,7 @@ class BuyerDashboardActivity : AppCompatActivity() {
         handleIntent(intent)
     }
 
-    private fun setupView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun firstSelectedItem(){
+    private fun firstSelectedItem() {
         binding.menuBottom.setItemSelected(R.id.home, true)
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
     }
@@ -60,7 +47,6 @@ class BuyerDashboardActivity : AppCompatActivity() {
                 R.id.cam -> fragment = CameraFragment()
                 R.id.user -> fragment = UserFragment()
             }
-
             fragment?.let {
                 supportFragmentManager.beginTransaction().replace(R.id.container, it).commit()
             }
@@ -81,9 +67,7 @@ class BuyerDashboardActivity : AppCompatActivity() {
 
         if (switchToFragment != null) {
             when (switchToFragment) {
-                "DetectionFragment" -> switchToDetectionFragment()
-                "ShopFragment" -> switchToDetectionFragment()
-                "HistoryFragment" -> switchToDetectionFragment()
+                "DetectionFragment", "ShopFragment", "HistoryFragment" -> switchToDetectionFragment()
             }
         }
 
@@ -100,7 +84,17 @@ class BuyerDashboardActivity : AppCompatActivity() {
             .commit()
     }
 
-
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()

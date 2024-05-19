@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.PisangBuyer.cart
+package com.syhdzn.tugasakhirapp.pisang_buyer.user_acc
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.syhdzn.tugasakhirapp.R
 
-class CartFragment : Fragment() {
+class UserFragment : Fragment() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +20,7 @@ class CartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        return inflater.inflate(R.layout.fragment_user, container, false)
     }
-
 
 }
