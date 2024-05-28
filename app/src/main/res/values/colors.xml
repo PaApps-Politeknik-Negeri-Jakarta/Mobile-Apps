@@ -2,12 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#A8A996</color>
+    <color name="transparent">#80FFFFFF</color>
 
     <color name="color_1">#4A675A</color>
     <color name="color_2">#747D1E</color>
     <color name="color_3">#FAFAFA</color>
+    <color name="color_4">#80FCE924</color>
 
-
-
+    <color name="gradient_1">#DEFFBC</color>
+    <color name="gradient_2">#FFF1D7</color>
+    <color name="button">#FBEA3A</color>
+    <color name="navbar">#C8BA2D</color>
 
 </resources>
