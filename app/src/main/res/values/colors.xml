@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#A8A996</color>
+    <color name="transparent">#80FFFFFF</color>
 
     <color name="color_1">#FFD580</color> <!-- Pastel Kuning -->
     <color name="color_2">#58BD6A</color> <!-- Pastel Hijau -->
@@ -19,7 +21,5 @@
     <color name="color_10">#FFB6C1</color> <!-- Pastel Pink -->
     <color name="color_11">#87CEFA</color> <!-- Pastel Biru -->
     <color name="color_button">#FFC107</color>
-
-
 
 </resources>
