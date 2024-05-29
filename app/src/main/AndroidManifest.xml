@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TugasAkhirApp"
         tools:targetApi="31">
         <activity
+            android:name=".pisang_seller.camera.CameraSellerActivity"
+            android:exported="false" />
+        <activity
             android:name=".pisang_seller.add.ProcessAddActivity"
             android:exported="false" />
         <activity

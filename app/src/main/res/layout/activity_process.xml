@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_apps" />
+                app:srcCompat="@drawable/ic_logo" />
 
             <ImageView
                 android:id="@+id/iv_bg_replace"
