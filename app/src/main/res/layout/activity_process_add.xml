@@ -252,7 +252,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_color_input_2"
-        android:backgroundTint="@color/color_1"
+        android:backgroundTint="@color/color_button"
         android:text="Add"
         android:textAllCaps="false"
         android:textColor="@color/color_3"

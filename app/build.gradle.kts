@@ -44,27 +44,6 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.database.ktx)
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.view)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.tensorflow.lite.support)
-    implementation(libs.tensorflow.lite.metadata)
-    implementation(libs.vision.common)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.firebase.storage.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
     // TensorFlow Lite versi 2.7.0
     implementation("org.tensorflow:tensorflow-lite:2.7.0")
@@ -97,6 +76,8 @@ dependencies {
 
     // Chip Navigation Bar library
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.activity)
 
     // Testing dependencies (junit, espresso, dll.)
     testImplementation("junit:junit:4.13.2")

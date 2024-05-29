@@ -52,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@color/color_1" />
+            app:srcCompat="@color/color_4" />
 
         <ImageView
             android:id="@+id/btn_camera"

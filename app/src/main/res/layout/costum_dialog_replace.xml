@@ -38,10 +38,10 @@
             android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font_3_reguler"
+            android:fontFamily="@font/inter_regular"
             android:text="Click yes if you want to raplace image!"
             android:textAlignment="textStart"
-            android:textColor="@color/color_1"
+            android:textColor="@color/color_4"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -54,6 +54,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_rounded"
         android:backgroundTint="@color/color_2"
+        android:fontFamily="@font/inter_regular"
         android:text="NO"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -67,7 +68,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_rounded"
-        android:backgroundTint="@color/color_1"
+        android:backgroundTint="@color/color_button"
+        android:fontFamily="@font/inter_regular"
         android:text="YES"
         android:textAllCaps="false"
         android:textColor="@color/white"
