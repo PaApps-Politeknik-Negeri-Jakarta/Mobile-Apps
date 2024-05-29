@@ -1,4 +1,4 @@
-package com.syhdzn.tugasakhirapp.pisang_buyer.user_acc
+package com.syhdzn.tugasakhirapp.pisang_seller.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,15 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.databinding.FragmentUserBinding
+import com.syhdzn.tugasakhirapp.databinding.FragmentUserSellerBinding
 import com.syhdzn.tugasakhirapp.login.LoginActivity
-import com.syhdzn.tugasakhirapp.pisang_seller.add.ProcessAddActivity
-import com.syhdzn.tugasakhirapp.pisang_seller.camera.CameraSellerActivity
 
-class UserFragment : Fragment() {
+class UserSellerFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: FragmentUserBinding
+    private lateinit var binding: FragmentUserSellerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +28,7 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserBinding.inflate(inflater, container, false)
+        binding = FragmentUserSellerBinding.inflate(inflater, container, false)
         return binding.root
     }
 

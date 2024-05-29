@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivitySellerDashboardBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.user_acc.UserFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.add.AddFragment
 
 
@@ -52,6 +53,8 @@ class SellerDashboardActivity : AppCompatActivity() {
         viewModel.selectedItemId.observe(this, Observer { itemId ->
             when (itemId) {
                 R.id.add -> fragment = AddFragment()
+                R.id.user -> fragment = UserFragment()
+
             }
 
             fragment?.let {
