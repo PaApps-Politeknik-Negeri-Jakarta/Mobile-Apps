@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation (libs.picasso)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -108,6 +111,5 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.2.0")
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("com.github.sina-seyfi:AdvancedCardView:1.0.1")
-
 
 }
