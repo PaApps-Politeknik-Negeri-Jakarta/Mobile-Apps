@@ -5,21 +5,28 @@
         android:id="@+id/chatseller"
         android:icon="@drawable/ic_chat_seller"
         android:title="Chat"
-        app:cnb_textColor="@color/white"
-        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/color_button"
+        app:cnb_iconColor="@color/color_button"
         />
     <item
         android:id="@+id/add"
         android:icon="@drawable/ic_stock"
         android:title="Add"
-        app:cnb_textColor="@color/white"
-        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/color_button"
+        app:cnb_iconColor="@color/color_button"
         />
     <item
         android:id="@+id/order"
         android:icon="@drawable/ic_order"
         android:title="Order"
-        app:cnb_textColor="@color/white"
-        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/color_button"
+        app:cnb_iconColor="@color/color_button"
+        />
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/ic_user"
+        android:title="Profile"
+        app:cnb_textColor="@color/color_button"
+        app:cnb_iconColor="@color/color_button"
         />
 </menu>

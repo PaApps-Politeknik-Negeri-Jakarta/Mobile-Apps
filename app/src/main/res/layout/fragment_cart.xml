@@ -4,7 +4,6 @@
     android:id="@+id/cart_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
     tools:context=".pisang_buyer.cart.CartFragment">
 
     <TextView
@@ -66,7 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/bg_button"
             android:text="@string/cart_order_button"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"

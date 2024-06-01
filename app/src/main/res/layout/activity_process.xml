@@ -30,7 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_apps" />
+                app:srcCompat="@drawable/ic_logo" />
 
             <ImageView
                 android:id="@+id/iv_bg_replace"
@@ -73,8 +73,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_rounded"
-        android:backgroundTint="@color/color_2"
+        android:background="@drawable/bg_color_input_2"
+        android:backgroundTint="@color/color_button"
         android:fontFamily="@font/font_3_reguler"
         android:text="Process Image"
         android:textAllCaps="false"

@@ -127,7 +127,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnRegis.setOnClickListener {
-            val fullname = binding.edRegisFullname.text.toString()
+            val fullname = binding.edRegisName.text.toString()
             val email = binding.edRegisEmail.text.toString()
             val password = binding.edRegisPassword.text.toString()
             val confirmPassword = binding.edRegisConpassword.text.toString()

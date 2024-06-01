@@ -8,15 +8,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
+import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
+import com.syhdzn.tugasakhirapp.pisang_buyer.data.ProductDeserializer
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: HomeViewModel
+    private lateinit var productList: ArrayList<Product>
+    private lateinit var firebaseRef: DatabaseReference
 
     private val imageIds = listOf(
         R.drawable.banner_1,
@@ -45,10 +54,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        firebaseRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+        productList = arrayListOf()
 
         setupViewPager()
         setupPageIndicator()
         observeCurrentPage()
+        setupRecyclerView()
+        fetchData()
     }
 
     private fun setupViewPager() {
@@ -61,6 +74,26 @@ class HomeFragment : Fragment() {
                 startAutoScroll()
             }
         })
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvProduct.apply {
+            setHasFixedSize(true)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        }
+    }
+
+    private fun fetchData() {
+        firebaseRef.child("product").addValueEventListener(ProductDeserializer(
+            onProductsLoaded = { products ->
+                productList.clear()
+                productList.addAll(products)
+                binding.rvProduct.adapter = ProductAdapter(productList)
+            },
+            onError = { error ->
+                Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        ))
     }
 
     private fun observeCurrentPage() {

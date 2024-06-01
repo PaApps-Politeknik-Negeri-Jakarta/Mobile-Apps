@@ -70,7 +70,7 @@ class ResetPasswordActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            val email = binding.edResetEmail.text.toString()
+            val email = binding.edResetPassword.text.toString()
 
             if (email.isNotEmpty()) {
                 checkEmailAndResetPassword(email)
