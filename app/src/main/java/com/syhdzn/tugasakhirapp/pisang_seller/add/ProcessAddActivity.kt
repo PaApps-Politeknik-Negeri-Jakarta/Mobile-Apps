@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.Toast
@@ -50,6 +51,8 @@ class ProcessAddActivity : AppCompatActivity() {
     private var totalWeight: Float = 0f
     private var measurementCount: Int = 0
     private var averageWeight: Float = 0f
+    private var isImageFromCameraOrGalleryDisplayed = false
+
 
     companion object {
         private const val img_width = 150
@@ -71,6 +74,7 @@ class ProcessAddActivity : AppCompatActivity() {
         setupAction()
         handleImageProses()
         displayDataAndPredict()
+        displayImageFromFirebase()
     }
 
     private fun setupAction() {
@@ -94,6 +98,32 @@ class ProcessAddActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayImageFromFirebase() {
+        if (!isImageFromCameraOrGalleryDisplayed) {
+            val photoReference = databaseReference.child("photos")
+            photoReference.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val base64Data = dataSnapshot.getValue(String::class.java)
+                    if (base64Data != null) {
+                        displayImageFromBase64(base64Data)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle onCancelled
+                }
+            })
+        }
+    }
+
+    private fun displayImageFromBase64(base64String: String) {
+        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        binding.ivItemProcess.setImageBitmap(bitmap)
+        processImage(bitmap)
+        val jenisPisang = detectJenisPisang(bitmap)
+        binding.tvNamaPisang.text = "$jenisPisang"
+    }
     private fun uploadDataToFirebase(namaPisang: String, kualitas: String, berat: Float, harga: Float, imageUrl: String) {
 
         val databaseReference = this.databaseReference.child("product")
@@ -182,6 +212,7 @@ class ProcessAddActivity : AppCompatActivity() {
             imageUriString != null -> {
                 val imageUri = Uri.parse(imageUriString)
                 handleGalleryImageProses(imageUri)
+                isImageFromCameraOrGalleryDisplayed = true
                 null
             }
             isBackCamera && pictureFile != null -> {
@@ -190,6 +221,7 @@ class ProcessAddActivity : AppCompatActivity() {
                 val jenisPisang = detectJenisPisang(rotatedBitmap)
                 binding.tvNamaPisang.text = "$jenisPisang"
                 binding.ivItemProcess.setImageBitmap(rotatedBitmap)
+                isImageFromCameraOrGalleryDisplayed = true
                 pictureFile
             }
             !isBackCamera && pictureFile != null -> {
@@ -198,6 +230,7 @@ class ProcessAddActivity : AppCompatActivity() {
                 val jenisPisang = detectJenisPisang(bitmap)
                 binding.tvNamaPisang.text = "$jenisPisang"
                 binding.ivItemProcess.setImageBitmap(bitmap)
+                isImageFromCameraOrGalleryDisplayed = true
                 pictureFile
             }
             else -> null
@@ -375,10 +408,6 @@ class ProcessAddActivity : AppCompatActivity() {
         }
 
         binding.tvKualitaPisang.text = "$label"
-
-        val weightText = binding.tvWeight.text.toString()
-        val weight = weightText.replace(" gram", "").toFloatOrNull() ?: 0f
-        predictPrice(weight, label)
     }
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
