@@ -5,28 +5,28 @@
         android:id="@+id/cart"
         android:icon="@drawable/ic_cart"
         android:title="Cart"
-        app:cnb_textColor="@color/color_button"
-        app:cnb_iconColor="@color/color_button"
+        app:cnb_textColor="@color/color_4"
+        app:cnb_iconColor="@color/color_2"
         />
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="Store"
-        app:cnb_textColor="@color/color_button"
-        app:cnb_iconColor="@color/color_button"
+        app:cnb_textColor="@color/color_4"
+        app:cnb_iconColor="@color/color_2"
         />
     <item
         android:id="@+id/cam"
         android:icon="@drawable/ic_cam"
         android:title="Detection"
-        app:cnb_textColor="@color/color_button"
-        app:cnb_iconColor="@color/color_button"
+        app:cnb_textColor="@color/color_4"
+        app:cnb_iconColor="@color/color_2"
         />
     <item
         android:id="@+id/user"
         android:icon="@drawable/ic_user"
         android:title="Profile"
-        app:cnb_textColor="@color/color_button"
-        app:cnb_iconColor="@color/color_button"
+        app:cnb_textColor="@color/color_4"
+        app:cnb_iconColor="@color/color_2"
         />
 </menu>
