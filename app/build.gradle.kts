@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -67,7 +66,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
     // TensorFlow Lite versi 2.7.0
     implementation("org.tensorflow:tensorflow-lite:2.7.0")
 
@@ -99,6 +97,8 @@ dependencies {
 
     // Chip Navigation Bar library
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.activity)
 
     // Testing dependencies (junit, espresso, dll.)
     testImplementation("junit:junit:4.13.2")

@@ -18,12 +18,18 @@ class ProductAdapter(private val productList: java.util.ArrayList<Product>) : Re
     }
     override fun getItemCount(): Int = productList.size
 
+    private fun parsePrice(priceText: String): Float {
+        val cleanedPriceText = priceText.replace("Rp", "").replace(".", "").replace(",", "")
+        return cleanedPriceText.toFloatOrNull() ?: 0f
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = productList[position]
         holder.apply {
             binding.apply {
                 tvProductName.text = currentItem.nama_pisang
-                tvProductPrice.text = currentItem.harga.toString()
+                val parsedPrice = parsePrice((currentItem.harga ?: "").toString())
+                tvProductPrice.text = "Rp ${parsedPrice}"
                 Picasso.get().load(currentItem.image_url).into(ivProductImage)
             }
         }
