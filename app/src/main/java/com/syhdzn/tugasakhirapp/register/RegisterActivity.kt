@@ -36,7 +36,6 @@ class RegisterActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
-
         setupKeyboardClosing()
         setupView()
         setupAction()
