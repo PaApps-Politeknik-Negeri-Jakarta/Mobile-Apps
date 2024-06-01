@@ -7,4 +7,54 @@
     android:layout_height="match_parent"
     tools:context=".pisang_buyer.detail.DetailProductActivity">
 
+    <ImageView
+        android:id="@+id/iv_product_image_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_product_name_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nama"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
+
+    <TextView
+        android:id="@+id/tv_product_price_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="harga"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
+
+    <TextView
+        android:id="@+id/tv_product_weight_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="berat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_product_price_detail"
+        app:layout_constraintStart_toEndOf="@+id/tv_product_name_detail"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
+
+    <TextView
+        android:id="@+id/tv_product_quality_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kualitas"
+        app:layout_constraintEnd_toStartOf="@+id/tv_product_weight_detail"
+        app:layout_constraintStart_toEndOf="@+id/tv_product_name_detail"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_weight_detail" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
