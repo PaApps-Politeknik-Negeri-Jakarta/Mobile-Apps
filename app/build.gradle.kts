@@ -111,5 +111,7 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.2.0")
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("com.github.sina-seyfi:AdvancedCardView:1.0.1")
+    implementation ("com.github.amarjain07:StickyScrollView:1.0.3")
+
 
 }
