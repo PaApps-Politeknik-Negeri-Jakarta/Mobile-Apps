@@ -58,7 +58,7 @@ class ProcessAddActivity : AppCompatActivity() {
         private const val img_width = 150
         private const val img_height = 150
         private const val NUM_CLASSES = 3
-        private const val NUM_CLASSES_JENIS_PISANG = 6
+        private const val NUM_CLASSES_JENIS_PISANG = 7
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -276,11 +276,18 @@ class ProcessAddActivity : AppCompatActivity() {
         val weightText = binding.tvWeight.text.toString()
         val weight = weightText.replace(" gram", "").toFloatOrNull() ?: 0f
         val quality = binding.tvKualitaPisang.text.toString()
+        val jenis = binding.tvNamaPisang.text.toString()
 
-        if (quality.isEmpty() || quality == "Unknown") {
+        if (quality.isEmpty()) {
             showErrorDialog("Harap deteksi kualitas pisang terlebih dahulu.")
+        }else if(quality == "Unknown"){
+            showErrorDialog("Kualitas terdeteksi Unknown.")
+        }else if (jenis.isEmpty()){
+            showErrorDialog("Harap deteksi jenis pisang terlebih dahulu.")
+        }else if(jenis == "Unknown"){
+            showErrorDialog("Jenis terdeteksi Unknown.")
         } else if (weight == 0f) {
-            showErrorDialog("Harap masukkan berat pisang terlebih dahulu.")
+            showErrorDialog("Harap masukkan harga pisang terlebih dahulu.")
         } else {
             ProcessDataAndPredict()
         }
@@ -290,9 +297,16 @@ class ProcessAddActivity : AppCompatActivity() {
         val hargaText = binding.tvHarga.text.toString()
         val harga = hargaText.replace("Rp", "").replace(".", "").replace(",", ".").toFloatOrNull() ?: 0f
         val quality = binding.tvKualitaPisang.text.toString()
+        val jenis = binding.tvNamaPisang.text.toString()
 
-        if (quality.isEmpty() || quality == "Unknown") {
+        if (quality.isEmpty()) {
             showErrorDialog("Harap deteksi kualitas pisang terlebih dahulu.")
+        }else if(quality == "Unknown"){
+            showErrorDialog("Kualitas terdeteksi Unknown.")
+        }else if (jenis.isEmpty()){
+            showErrorDialog("Harap deteksi jenis pisang terlebih dahulu.")
+        }else if(jenis == "Unknown"){
+            showErrorDialog("Jenis terdeteksi Unknown.")
         } else if (harga == 0f) {
             showErrorDialog("Harap masukkan harga pisang terlebih dahulu.")
         } else {
@@ -454,7 +468,7 @@ class ProcessAddActivity : AppCompatActivity() {
     }
 
     private fun loadModelFileJenisPisang(): ByteBuffer {
-        return assets.openFd("banana_detectionjenis_model.tflite").run {
+        return assets.openFd("banana_detection_model_barubanget.tflite").run {
             FileInputStream(fileDescriptor).channel.map(
                 FileChannel.MapMode.READ_ONLY,
                 startOffset,
