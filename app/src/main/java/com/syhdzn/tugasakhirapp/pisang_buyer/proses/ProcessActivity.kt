@@ -36,7 +36,7 @@ class ProcessActivity : AppCompatActivity() {
         private const val img_width = 150
         private const val img_height = 150
         private const val NUM_CLASSES = 3
-        private const val NUM_CLASSES_JENIS_PISANG = 6
+        private const val NUM_CLASSES_JENIS_PISANG = 7
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,7 +208,7 @@ class ProcessActivity : AppCompatActivity() {
     }
 
     private fun loadModelFileJenisPisang(): ByteBuffer {
-        return assets.openFd("banana_detectionjenis_model.tflite").run {
+        return assets.openFd("banana_detection_model_barubanget.tflite").run {
             FileInputStream(fileDescriptor).channel.map(
                 FileChannel.MapMode.READ_ONLY,
                 startOffset,

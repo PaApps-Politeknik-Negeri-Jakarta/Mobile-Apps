@@ -11,6 +11,11 @@
         android:layout_height="match_parent">
 
         <!-- Search Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
         <SearchView
             android:id="@+id/sv_home"
             android:layout_width="0dp"
