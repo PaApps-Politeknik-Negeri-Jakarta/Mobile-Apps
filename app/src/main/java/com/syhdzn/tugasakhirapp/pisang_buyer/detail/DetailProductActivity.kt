@@ -12,6 +12,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
+import java.text.NumberFormat
+import java.util.Locale
 
 class DetailProductActivity : AppCompatActivity() {
     private var _binding : ActivityDetailProductBinding? = null
@@ -34,11 +36,16 @@ class DetailProductActivity : AppCompatActivity() {
         val quality = intent.getStringExtra("QUALITY")
         val weight = intent.getIntExtra("WEIGHT",0)
         val imgUri = intent.getStringExtra("IMG")
+        val formattedPrice = formatPrice(price.toFloat())
 
         findViewById<TextView>(R.id.tv_product_name_detail).text = name
-        findViewById<TextView>(R.id.tv_product_price_detail).text = String.format("%.2f", price)
-//        findViewById<TextView>(R.id.tv_product_quality_detail).text = quality
-//        findViewById<TextView>(R.id.tv_product_weight_detail).text = weight.toString()
+        findViewById<TextView>(R.id.tv_product_price_detail).text = formattedPrice
+        findViewById<TextView>(R.id.tv_product_quality_detail).text = quality
+        findViewById<TextView>(R.id.tv_product_weight_detail).text = weight.toString()
         Picasso.get().load(imgUri).into(findViewById<ImageView>(R.id.iv_product_image_detail))
+    }
+    private fun formatPrice(price: Float): String {
+        val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        return numberFormat.format(price)
     }
 }
