@@ -31,7 +31,6 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
         holder.apply {
             binding.apply {
                 tvProductName.text = currentItem.nama_pisang
-
                 val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
                 tvProductPrice.text = formatPrice(price)
 
