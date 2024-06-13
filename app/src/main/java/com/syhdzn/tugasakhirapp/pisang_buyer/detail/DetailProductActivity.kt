@@ -37,8 +37,8 @@ class DetailProductActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tv_product_name_detail).text = name
         findViewById<TextView>(R.id.tv_product_price_detail).text = String.format("%.2f", price)
-        findViewById<TextView>(R.id.tv_product_quality_detail).text = quality
-        findViewById<TextView>(R.id.tv_product_weight_detail).text = weight.toString()
+//        findViewById<TextView>(R.id.tv_product_quality_detail).text = quality
+//        findViewById<TextView>(R.id.tv_product_weight_detail).text = weight.toString()
         Picasso.get().load(imgUri).into(findViewById<ImageView>(R.id.iv_product_image_detail))
     }
 }
