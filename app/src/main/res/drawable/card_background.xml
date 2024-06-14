@@ -1,0 +1,8 @@
+<!-- res/drawable/card_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/white"/> <!-- Background color -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/color_4"/> <!-- Stroke color and width -->
+    <corners android:radius="16dp"/> <!-- Corner radius -->
+</shape>
