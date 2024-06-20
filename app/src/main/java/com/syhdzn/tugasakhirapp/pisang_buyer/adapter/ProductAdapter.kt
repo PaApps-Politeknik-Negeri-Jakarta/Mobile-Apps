@@ -10,13 +10,23 @@ import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 import com.syhdzn.tugasakhirapp.pisang_buyer.detail.DetailProductActivity
 import java.text.NumberFormat
 import java.util.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 
 class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(
+            ItemProductBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = productList.size
@@ -26,6 +36,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
         return numberFormat.format(price)
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = productList[position]
         holder.apply {
@@ -34,7 +45,15 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
                 val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
                 tvProductPrice.text = formatPrice(price)
 
-                Picasso.get().load(currentItem.image_url).into(ivProductImage)
+                val radius = 16 // corner radius, higher value = more rounded
+                val requestOptions = RequestOptions()
+                    .override(150, 150) // Set fixed width and height
+                    .transform(CenterCrop(), RoundedCorners(radius))
+
+                Glide.with(ivProductImage.context)
+                    .load(currentItem.image_url)
+                    .apply(requestOptions)
+                    .into(ivProductImage)
 
                 root.setOnClickListener {
                     val context = holder.itemView.context
@@ -52,3 +71,4 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
         }
     }
 }
+

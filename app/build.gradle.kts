@@ -66,6 +66,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
     // TensorFlow Lite versi 2.7.0
     implementation("org.tensorflow:tensorflow-lite:2.7.0")
 
@@ -112,6 +113,8 @@ dependencies {
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("com.github.sina-seyfi:AdvancedCardView:1.0.1")
     implementation ("com.github.amarjain07:StickyScrollView:1.0.3")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+//    implementation ("com.github.didikk:sticky-nestedscrollview:1.0.1")
 
 
 }
