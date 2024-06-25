@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -63,6 +65,15 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation (libs.picasso)
+    // Chip Navigation Bar library
+    implementation(libs.chip.navigation.bar)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.activity)
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    //KSP
+    ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -95,11 +106,6 @@ dependencies {
 
     // SweetAlert library
     implementation("com.github.f0ris.sweetalert:library:1.6.2")
-
-    // Chip Navigation Bar library
-    implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.androidx.activity)
 
     // Testing dependencies (junit, espresso, dll.)
     testImplementation("junit:junit:4.13.2")
