@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.databinding.ItemProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 import com.syhdzn.tugasakhirapp.pisang_buyer.detail.DetailProductActivity
@@ -45,7 +44,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
                 val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
                 tvProductPrice.text = formatPrice(price)
 
-                val radius = 16 // corner radius, higher value = more rounded
+                val radius = 8 // corner radius, higher value = more rounded
                 val requestOptions = RequestOptions()
                     .override(150, 150) // Set fixed width and height
                     .transform(CenterCrop(), RoundedCorners(radius))
