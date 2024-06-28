@@ -5,56 +5,123 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back_ground"
     tools:context=".pisang_buyer.detail.DetailProductActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/detail_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back" />
+
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cart" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/iv_product_image_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_navigation"
+        tools:ignore="MissingConstraints"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_product_name_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nama"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/product_name"
+        android:textSize="24sp"
+        android:textColor="@color/color_1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
-
-    <TextView
-        android:id="@+id/tv_product_price_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="harga"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
-
-    <TextView
-        android:id="@+id/tv_product_weight_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="berat"
-        app:layout_constraintEnd_toStartOf="@+id/tv_product_price_detail"
-        app:layout_constraintStart_toEndOf="@+id/tv_product_name_detail"
-        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
+        app:layout_constraintTop_toBottomOf="@id/iv_product_image_detail" />
 
     <TextView
         android:id="@+id/tv_product_quality_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="kualitas"
-        app:layout_constraintEnd_toStartOf="@+id/tv_product_weight_detail"
-        app:layout_constraintStart_toEndOf="@+id/tv_product_name_detail"
-        app:layout_constraintTop_toTopOf="@+id/tv_product_weight_detail" />
+        android:layout_marginTop="4dp"
+        android:text="@string/product_quality"
+        android:textSize="24sp"
+        android:textColor="@color/color_2"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_name_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_name_detail" />
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/tv_product_price_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_marginTop="20dp"
+        android:text="@string/product_price"
+        android:textSize="24sp"
+        android:textAppearance="@font/font_4_medium"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_quality_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_quality_detail" />
+
+    <TextView
+        android:id="@+id/tv_product_weight_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/product_weight"
+        android:textSize="16sp"
+        android:textAppearance="@font/font_4_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product_image_detail" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_outlined"
+            android:text="@string/detal_cart_button"
+            android:textColor="@color/color_button" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/button_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button"
+            android:text="@string/cart_order_button"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
