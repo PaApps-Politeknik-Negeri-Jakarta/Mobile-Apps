@@ -67,6 +67,8 @@
             android:layout_marginHorizontal="10dp"
             android:text="@string/cart_order_button"
             android:textSize="32sp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/color_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
