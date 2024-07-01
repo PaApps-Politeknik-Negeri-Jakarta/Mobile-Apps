@@ -11,8 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:fontFamily="@font/inter_bold"
         android:text="@string/cart_title"
-        android:textAppearance="@font/font_1_bold"
+        android:textColor="@color/color_4"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,15 +21,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cart"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="500dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/cl_cart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_detail"
-        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_cart" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,40 +40,47 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/tv_totalHarga"
+            android:id="@+id/tv_titletotalHarga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter_medium"
             android:text="@string/cart_price"
-            android:textAppearance="@font/font_1_bold"
-            android:textSize="24sp"
+            android:textColor="@color/color_4"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_totalHarga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cart_total_price"
-            android:textAppearance="@font/font_1_bold"
-            android:textSize="24sp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="0"
+            android:textColor="@color/color_4"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_titletotalHarga"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.952"
-            app:layout_constraintStart_toEndOf="@+id/tv_totalHarga"
-            app:layout_constraintTop_toTopOf="@id/tv_totalHarga" />
+            app:layout_constraintTop_toTopOf="@id/tv_titletotalHarga" />
 
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/btn_checkout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:text="@string/cart_order_button"
-            android:textSize="32sp"
-            android:textColor="@color/white"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_button"
             android:backgroundTint="@color/color_button"
+            android:text="@string/cart_order_button"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_totalHarga" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,28 +2,35 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.user_acc
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentUserBinding
 import com.syhdzn.tugasakhirapp.login.LoginActivity
-import com.syhdzn.tugasakhirapp.pisang_seller.add.ProcessAddActivity
-import com.syhdzn.tugasakhirapp.pisang_seller.camera.CameraSellerActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
 
 class UserFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: DatabaseReference
     private lateinit var binding: FragmentUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -37,12 +44,21 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mAuth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+
         setupAction()
+        loadUserData()
     }
 
     private fun setupAction() {
         binding.btnLogout.setOnClickListener {
             showDialogLogout()
+        }
+
+        binding.btnRiwayat.setOnClickListener {
+            val intent = Intent(requireContext(), HistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -68,9 +84,42 @@ class UserFragment : Fragment() {
         dialog.show()
     }
 
+    data class User(val fullname: String = "")
+
+    private fun loadUserData() {
+        val currentUser = mAuth.currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            mDatabase.child("users").child(uid).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(User::class.java)
+                    if (user != null) {
+                        binding.tvNama.text = user.fullname
+                    } else {
+                        Log.d("UserFragment", "User data is null")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("UserFragment", "Database error: ${error.message}")
+                }
+            })
+        } else {
+            Log.d("UserFragment", "Current user is null")
+        }
+    }
+
+    private fun clearUserSession() {
+        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.apply()
+    }
 
     private fun logOut() {
-        auth.signOut()
+        clearUserSession()
+        mAuth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
         activity?.finish()

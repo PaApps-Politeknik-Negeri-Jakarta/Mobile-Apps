@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -34,6 +35,12 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
         firebaseAuth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         setupKeyboardClosing()
@@ -54,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
                                     val userId = firebaseAuth.currentUser?.uid
                                     if (userId != null) {
                                         val userData = HashMap<String, Any>()
-                                        userData["full name"] = fullname
+                                        userData["fullname"] = fullname
                                         userData["email"] = email
                                         userData["role"] = statusKu
                                         databaseReference.child("users").child(userId).setValue(userData)
@@ -184,4 +191,6 @@ class RegisterActivity : AppCompatActivity() {
         icShowPass.setImageResource(if (inputType == InputType.TYPE_CLASS_TEXT) R.drawable.ic_visible else R.drawable.ic_invisible)
         edLoginPassword.setSelection(edLoginPassword.text.length)
     }
+
+
 }
