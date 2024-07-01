@@ -20,6 +20,24 @@
         android:theme="@style/Theme.TugasAkhirApp"
         tools:targetApi="31">
         <activity
+            android:name=".pisang_seller.order.detail_order_buyer.BuyerDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_seller.order.list_order_buyer.BuyerOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.history.detail_history.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.history.list_history.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.payment.OrderSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.payment.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".pisang_buyer.detail.DetailProductActivity"
             android:exported="false" />
         <activity
@@ -36,13 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".pisang_buyer.dashboard.BuyerDashboardActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".pisang_seller.dashboard.SellerDashboardActivity"
             android:exported="false" />
@@ -57,7 +69,13 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

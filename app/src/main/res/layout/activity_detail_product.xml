@@ -21,19 +21,23 @@
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:tint="@color/color_4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back" />
+            app:srcCompat="@drawable/ic_back" />
 
         <ImageView
             android:id="@+id/cart"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:tint="@color/color_4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/cart" />
+            app:srcCompat="@drawable/ic_cart" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -41,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="340dp"
         android:layout_marginTop="12dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_navigation"
