@@ -6,81 +6,71 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
+    android:backgroundTint="@color/color_3"
     app:cardCornerRadius="16dp"
-    android:backgroundTint="@color/transparent">
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="18dp">
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_background"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout5"
+            app:srcCompat="@drawable/clear" />
 
         <ImageView
             android:id="@+id/iv_product_image_cart"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:contentDescription="@string/product_image"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
-            android:id="@+id/tv_pruduct_name_cart"
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/product_name"
-            android:textAppearance="@font/font_1_bold"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_product_image_cart"
-            app:layout_constraintTop_toTopOf="@+id/iv_product_image_cart" />
-
-        <TextView
-            android:id="@+id/tv_product_price_cart"
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/product_price"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_product_image_cart"
-            app:layout_constraintTop_toBottomOf="@+id/tv_pruduct_name_cart" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="24dp"
             android:orientation="vertical"
-            android:gravity="center"
-            android:background="@color/white"
-            android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_pruduct_name_cart"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/btn_increase"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="@string/cart_increase"
-                android:src="@drawable/baseline_add"
-                android:backgroundTint="@color/white" />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_product_image_cart"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+            app:layout_constraintStart_toEndOf="@+id/iv_product_image_cart"
+            app:layout_constraintTop_toTopOf="@+id/iv_product_image_cart">
 
             <TextView
-                android:id="@+id/product_amount"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_pruduct_name_cart"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/cart_amount"
-                android:textSize="24sp"
-                android:textAppearance="@font/font_1_bold"/>
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="@string/product_name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageButton
-                android:id="@+id/btn_decrease"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:contentDescription="@string/cart_decrease"
-                android:src="@drawable/baseline_min"
-                android:backgroundTint="@color/white" />
-
+            <TextView
+                android:id="@+id/tv_product_price_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/product_price"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

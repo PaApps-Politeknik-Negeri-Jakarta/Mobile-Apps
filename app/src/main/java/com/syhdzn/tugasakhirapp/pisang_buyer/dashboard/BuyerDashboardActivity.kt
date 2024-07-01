@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,6 +27,12 @@ class BuyerDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBuyerDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
 
         setupView()
         firstSelectedItem()
@@ -67,7 +74,7 @@ class BuyerDashboardActivity : AppCompatActivity() {
 
         if (switchToFragment != null) {
             when (switchToFragment) {
-                "DetectionFragment", "ShopFragment", "HistoryFragment" -> switchToDetectionFragment()
+                "DetectionFragment", "CartFragment", "HistoryFragment", "UserFragment" -> switchToDetectionFragment()
             }
         }
 
@@ -96,9 +103,4 @@ class BuyerDashboardActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, BuyerDashboardActivity::class.java)
-        startActivity(intent)
-    }
 }

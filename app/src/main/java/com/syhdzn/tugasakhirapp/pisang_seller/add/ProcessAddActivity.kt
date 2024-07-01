@@ -130,6 +130,7 @@ class ProcessAddActivity : AppCompatActivity() {
         val dataId = databaseReference.push().key ?: ""
 
         val data = hashMapOf<String, Any>(
+            "id" to dataId,
             "nama_pisang" to namaPisang,
             "kualitas" to kualitas,
             "berat" to berat,
