@@ -101,6 +101,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:id="@+id/chat"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/chat" />
+
         <Button
             android:id="@+id/button_cart"
             android:layout_width="wrap_content"

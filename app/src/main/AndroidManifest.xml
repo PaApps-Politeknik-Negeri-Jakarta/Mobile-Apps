@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TugasAkhirApp"
         tools:targetApi="31">
         <activity
+            android:name=".pisang_buyer.chat.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".pisang_buyer.detail.DetailProductActivity"
             android:exported="false" />
         <activity
@@ -57,7 +60,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
