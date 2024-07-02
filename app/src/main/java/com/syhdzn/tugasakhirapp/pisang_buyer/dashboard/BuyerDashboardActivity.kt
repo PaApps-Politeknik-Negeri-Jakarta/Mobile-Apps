@@ -54,19 +54,17 @@ class BuyerDashboardActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        binding.menuBottom.setOnItemSelectedListener(object : ChipNavigationBar.OnItemSelectedListener {
-            override fun onItemSelected(i: Int) {
-                viewModel.setSelectedItemId(i)
-            }
-        })
+        binding.menuBottom.setOnItemSelectedListener { itemId ->
+            viewModel.setSelectedItemId(itemId)
+        }
     }
 
     private fun handleIntent(intent: Intent) {
         val switchToFragment = intent.getStringExtra("switchToFragment")
         val selectMenuItem = intent.getIntExtra("selectMenuItem", -1)
 
-        if (switchToFragment != null) {
-            when (switchToFragment) {
+        switchToFragment?.let {
+            when (it) {
                 "DetectionFragment", "ShopFragment", "HistoryFragment" -> switchToDetectionFragment()
             }
         }
@@ -98,7 +96,6 @@ class BuyerDashboardActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, BuyerDashboardActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, BuyerDashboardActivity::class.java))
     }
 }

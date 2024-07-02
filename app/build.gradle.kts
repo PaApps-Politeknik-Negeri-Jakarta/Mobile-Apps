@@ -69,15 +69,12 @@ dependencies {
     implementation(libs.chip.navigation.bar)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.androidx.activity)
-    //Room
     implementation(libs.androidx.room.runtime)
-    implementation (libs.androidx.room.ktx)
-    //KSP
-    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    ksp(libs.androidx.room.compiler)
     // TensorFlow Lite versi 2.7.0
     implementation("org.tensorflow:tensorflow-lite:2.7.0")
 
