@@ -59,7 +59,6 @@
             android:tint="@color/color_4"
             app:srcCompat="@drawable/ic_baseline_lock_24" />
 
-        <!-- Strip -->
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -122,7 +121,6 @@
             android:tint="@color/color_4"
             app:srcCompat="@drawable/ic_baseline_lock_24" />
 
-        <!-- Strip -->
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -184,7 +182,7 @@
             android:layout_marginStart="5dp"
             android:tint="@color/color_4"
             app:srcCompat="@drawable/ic_baseline_email_24" />
-        <!-- Strip -->
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -251,7 +249,7 @@
             android:layout_marginStart="5dp"
             android:tint="@color/color_4"
             app:srcCompat="@drawable/ic_baseline_account_circle_24" />
-        <!-- Strip -->
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"

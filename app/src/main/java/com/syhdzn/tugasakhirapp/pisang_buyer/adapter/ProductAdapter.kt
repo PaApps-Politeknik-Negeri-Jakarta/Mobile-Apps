@@ -35,39 +35,35 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
         return numberFormat.format(price)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = productList[position]
-        holder.apply {
-            binding.apply {
-                tvProductName.text = currentItem.nama_pisang
-                val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
-                tvProductPrice.text = formatPrice(price)
+        holder.binding.apply {
+            tvProductName.text = currentItem.nama_pisang
+            val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
+            tvProductPrice.text = formatPrice(price)
 
-                val radius = 8 // corner radius, higher value = more rounded
-                val requestOptions = RequestOptions()
-                    .override(150, 150) // Set fixed width and height
-                    .transform(CenterCrop(), RoundedCorners(radius))
+            val radius = 8
+            val requestOptions = RequestOptions()
+                .override(150, 150)
+                .transform(CenterCrop(), RoundedCorners(radius))
 
-                Glide.with(ivProductImage.context)
-                    .load(currentItem.image_url)
-                    .apply(requestOptions)
-                    .into(ivProductImage)
+            Glide.with(ivProductImage.context)
+                .load(currentItem.image_url)
+                .apply(requestOptions)
+                .into(ivProductImage)
 
-                root.setOnClickListener {
-                    val context = holder.itemView.context
-                    val intent = Intent(context, DetailProductActivity::class.java).apply {
-                        putExtra("ID", currentItem.id)
-                        putExtra("NAME", currentItem.nama_pisang)
-                        putExtra("PRICE", currentItem.harga)
-                        putExtra("QUALITY", currentItem.kualitas)
-                        putExtra("WEIGHT", currentItem.berat)
-                        putExtra("IMG", currentItem.image_url)
-                    }
-                    context.startActivity(intent)
+            root.setOnClickListener {
+                val context = holder.itemView.context
+                val intent = Intent(context, DetailProductActivity::class.java).apply {
+                    putExtra("ID", currentItem.id)
+                    putExtra("NAME", currentItem.nama_pisang)
+                    putExtra("PRICE", currentItem.harga)
+                    putExtra("QUALITY", currentItem.kualitas)
+                    putExtra("WEIGHT", currentItem.berat)
+                    putExtra("IMG", currentItem.image_url)
                 }
+                context.startActivity(intent)
             }
         }
     }
 }
-

@@ -136,9 +136,6 @@
         app:layout_constraintEnd_toEndOf="@+id/login_inpt_pass"
         app:layout_constraintStart_toStartOf="@+id/login_inpt_pass" />
 
-    <!-- Forgot Password -->
-
-    <!-- Register Now -->
 
     <TextView
         android:id="@+id/resetnow"

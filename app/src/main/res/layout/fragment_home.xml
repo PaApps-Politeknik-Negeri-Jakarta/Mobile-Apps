@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Search Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Chat Icon -->
         <ImageView
             android:id="@+id/imageView6"
             android:layout_width="32dp"
@@ -86,7 +84,6 @@
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!-- Horizontal Category Scroll -->
 
                 <LinearLayout
                     android:id="@+id/ContainerKategori"
@@ -200,8 +197,6 @@
                                 android:textColor="@color/color_3"
                                 android:textSize="14sp" />
 
-                            <!-- Additional category TextViews similar to above -->
-
                         </LinearLayout>
                     </HorizontalScrollView>
                 </LinearLayout>
@@ -223,8 +218,6 @@
             </LinearLayout>
 
         </com.amar.library.ui.StickyScrollView>
-
-        <!-- ScrollView Content -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

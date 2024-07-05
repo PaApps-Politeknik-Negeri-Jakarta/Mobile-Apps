@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -40,6 +41,12 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+       onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
         firebaseAuth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
@@ -52,7 +59,14 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    checkUserRole(email)
+                    val user = firebaseAuth.currentUser
+                    val userId = user?.uid
+                    if (userId != null) {
+                        saveUserIdToPreferences(userId)
+                        checkUserRole(email)
+                    } else {
+                        showErrorDialog("Failed to get user ID")
+                    }
                 } else {
                     showInvalidDialog("Invalid email or password")
                 }
@@ -98,6 +112,13 @@ class LoginActivity : AppCompatActivity() {
                 showErrorDialog("Database error: ${databaseError.message}")
             }
         })
+    }
+
+    private fun saveUserIdToPreferences(userId: String) {
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("USER_ID", userId)
+        editor.apply()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -228,4 +249,6 @@ class LoginActivity : AppCompatActivity() {
         dialog.setCustomImage(R.drawable.ic_warning)
         dialog.show()
     }
+
+
 }
