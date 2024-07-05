@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,8 +13,12 @@ import androidx.lifecycle.Observer
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivitySellerDashboardBinding
-import com.syhdzn.tugasakhirapp.pisang_buyer.user_acc.UserFragment
+import com.syhdzn.tugasakhirapp.pisang_buyer.camera.CameraFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.add.AddFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.chatseller.ChatSellerFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.order.list_buyer.OrderFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.product.ProductListFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.user.UserSellerFragment
 
 
 class SellerDashboardActivity : AppCompatActivity() {
@@ -26,10 +31,23 @@ class SellerDashboardActivity : AppCompatActivity() {
         binding = ActivitySellerDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Handle back press logic here if needed
+            }
+        })
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ProductListFragment())
+                .commit()
+        }
+
         setupView()
         firstSelectedItem()
         observeSelectedItem()
         setupBottomNavigation()
+        handleIntent(intent)
     }
 
     private fun setupView() {
@@ -44,7 +62,7 @@ class SellerDashboardActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun firstSelectedItem(){
+    private fun firstSelectedItem() {
         binding.menuBottom.setItemSelected(R.id.add, true)
         supportFragmentManager.beginTransaction().replace(R.id.container, AddFragment()).commit()
     }
@@ -53,8 +71,9 @@ class SellerDashboardActivity : AppCompatActivity() {
         viewModel.selectedItemId.observe(this, Observer { itemId ->
             when (itemId) {
                 R.id.add -> fragment = AddFragment()
-                R.id.user -> fragment = UserFragment()
-
+                R.id.user -> fragment = UserSellerFragment()
+                R.id.order -> fragment = OrderFragment()
+                R.id.chatseller -> fragment = ProductListFragment()
             }
 
             fragment?.let {
@@ -63,17 +82,34 @@ class SellerDashboardActivity : AppCompatActivity() {
         })
     }
 
+    private fun handleIntent(intent: Intent) {
+        val switchToFragment = intent.getStringExtra("switchToFragment")
+        val selectMenuItem = intent.getIntExtra("selectMenuItem", -1)
+
+        if (switchToFragment != null) {
+            when (switchToFragment) {
+                "OrderFragment" -> switchToDetectionFragment()
+            }
+        }
+
+        if (selectMenuItem != -1) {
+            binding.menuBottom.setItemSelected(selectMenuItem, true)
+        }
+    }
+
+    private fun switchToDetectionFragment() {
+        fragment = CameraFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment!!)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun setupBottomNavigation() {
         binding.menuBottom.setOnItemSelectedListener(object : ChipNavigationBar.OnItemSelectedListener {
             override fun onItemSelected(i: Int) {
                 viewModel.setSelectedItemId(i)
             }
         })
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this, SellerDashboardActivity::class.java)
-        startActivity(intent)
     }
 }

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,6 +27,12 @@ class BuyerDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBuyerDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
 
         setupView()
         firstSelectedItem()
@@ -54,18 +61,20 @@ class BuyerDashboardActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        binding.menuBottom.setOnItemSelectedListener { itemId ->
-            viewModel.setSelectedItemId(itemId)
-        }
+        binding.menuBottom.setOnItemSelectedListener(object : ChipNavigationBar.OnItemSelectedListener {
+            override fun onItemSelected(i: Int) {
+                viewModel.setSelectedItemId(i)
+            }
+        })
     }
 
     private fun handleIntent(intent: Intent) {
         val switchToFragment = intent.getStringExtra("switchToFragment")
         val selectMenuItem = intent.getIntExtra("selectMenuItem", -1)
 
-        switchToFragment?.let {
-            when (it) {
-                "DetectionFragment", "ShopFragment", "HistoryFragment" -> switchToDetectionFragment()
+        if (switchToFragment != null) {
+            when (switchToFragment) {
+                "DetectionFragment", "CartFragment", "HistoryFragment", "UserFragment" -> switchToDetectionFragment()
             }
         }
 
@@ -94,8 +103,4 @@ class BuyerDashboardActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(Intent(this, BuyerDashboardActivity::class.java))
-    }
 }
