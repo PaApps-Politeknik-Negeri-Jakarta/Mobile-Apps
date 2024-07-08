@@ -24,11 +24,6 @@ class OrderDetailActivity : AppCompatActivity() {
         binding = ActivityOrderDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-            }
-        })
-
         userId = getUserIdFromPreferences()
         orderId = intent.getStringExtra("ORDER_ID") ?: ""
 
@@ -51,6 +46,14 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
+
         binding.icBack.setOnClickListener {
             finish()
         }

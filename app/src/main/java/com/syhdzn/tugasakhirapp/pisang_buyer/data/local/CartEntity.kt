@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "cart_table")
 data class CartEntity(
-
     @PrimaryKey(autoGenerate = true)
     @field:ColumnInfo(name = "cartId")
     val id: Long = 0,
@@ -26,7 +25,10 @@ data class CartEntity(
     var imageUrl: String = "",
 
     @field:ColumnInfo(name = "amount")
-    val amount: Int
+    val amount: Int,
+
+    @field:ColumnInfo(name = "ignore_check")
+    var ignoreCheck: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -34,7 +36,8 @@ data class CartEntity(
         parcel.readDouble(),
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -44,6 +47,7 @@ data class CartEntity(
         parcel.writeString(idbarang)
         parcel.writeString(imageUrl)
         parcel.writeInt(amount)
+        parcel.writeByte(if (ignoreCheck) 1 else 0)
     }
 
     override fun describeContents(): Int {

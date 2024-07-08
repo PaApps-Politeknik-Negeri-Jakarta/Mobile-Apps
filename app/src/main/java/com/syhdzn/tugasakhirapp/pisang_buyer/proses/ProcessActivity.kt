@@ -134,12 +134,12 @@ class ProcessActivity : AppCompatActivity() {
         val maxIndex = result.indices.maxByOrNull { result[it] } ?: -1
 
         return when (maxIndex) {
-            0 -> "pisang_ambon"
-            1 -> "pisang_barangan"
-            2 -> "pisang_kepok"
-            3 -> "pisang_raja"
-            4 -> "pisang_tanduk"
-            5 -> "pisang_uli"
+            0 -> "Pisang Ambon"
+            1 -> "Pisang Barangan"
+            2 -> "Pisang Kepok"
+            3 -> "Pisang Raja"
+            4 -> "Pisang Tanduk"
+            5 -> "Pisang Uli"
             else -> "Unknown"
         }
     }
