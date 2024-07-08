@@ -33,12 +33,6 @@ class HistoryActivity : AppCompatActivity() {
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-            }
-        })
-
         userId = getUserIdFromPreferences()
         ordersRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app")
             .getReference("orders").child(userId)
@@ -60,6 +54,13 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
         binding.icBack.setOnClickListener {
             startActivity(Intent(this, BuyerDashboardActivity::class.java).apply {
                 putExtra("switchToFragment", "UserFragment")

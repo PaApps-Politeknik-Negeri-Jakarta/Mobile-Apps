@@ -3,6 +3,8 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.dashboard
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
@@ -28,13 +30,9 @@ class BuyerDashboardActivity : AppCompatActivity() {
         binding = ActivityBuyerDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-            }
-        })
 
         setupView()
+        setupAction()
         firstSelectedItem()
         observeSelectedItem()
         setupBottomNavigation()
@@ -44,6 +42,14 @@ class BuyerDashboardActivity : AppCompatActivity() {
     private fun firstSelectedItem() {
         binding.menuBottom.setItemSelected(R.id.home, true)
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
+    }
+
+    private fun setupAction() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
     }
 
     private fun observeSelectedItem() {

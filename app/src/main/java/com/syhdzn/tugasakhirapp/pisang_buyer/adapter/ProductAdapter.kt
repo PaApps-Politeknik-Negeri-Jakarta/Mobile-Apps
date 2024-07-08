@@ -42,7 +42,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
             val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
             tvProductPrice.text = formatPrice(price)
 
-            val radius = 8
+            val radius = 16
             val requestOptions = RequestOptions()
                 .override(150, 150)
                 .transform(CenterCrop(), RoundedCorners(radius))

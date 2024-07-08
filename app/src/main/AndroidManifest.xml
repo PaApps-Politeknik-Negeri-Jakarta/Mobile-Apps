@@ -20,6 +20,9 @@
         android:theme="@style/Theme.TugasAkhirApp"
         tools:targetApi="31">
         <activity
+            android:name=".pisang_buyer.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".pisang_seller.order.detail_order_buyer.BuyerDetailActivity"
             android:exported="false" />
         <activity

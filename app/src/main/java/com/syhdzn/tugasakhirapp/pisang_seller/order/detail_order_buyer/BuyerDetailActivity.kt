@@ -43,14 +43,6 @@ class BuyerDetailActivity : AppCompatActivity() {
         binding = ActivityBuyerDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Custom back press action
-                startActivity(Intent(this@BuyerDetailActivity, BuyerOrderActivity::class.java))
-                finish()
-            }
-        })
-
         mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         userId = intent.getStringExtra("USER_ID") ?: return
@@ -70,6 +62,13 @@ class BuyerDetailActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
+
         binding.icBack.setOnClickListener {
             finish()
         }

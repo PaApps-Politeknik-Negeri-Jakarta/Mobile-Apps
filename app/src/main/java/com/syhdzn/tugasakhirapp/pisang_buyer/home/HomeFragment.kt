@@ -1,5 +1,6 @@
 package com.syhdzn.tugasakhirapp.pisang_buyer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,9 @@ import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.ProductDeserializer
+import com.syhdzn.tugasakhirapp.pisang_buyer.reset_pass.ResetPasswordActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
+import com.syhdzn.tugasakhirapp.register.RegisterActivity
 
 class HomeFragment : Fragment() {
 
@@ -57,12 +61,22 @@ class HomeFragment : Fragment() {
         firebaseRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         productList = arrayListOf()
 
+        setupAction()
         setupViewPager()
         setupPageIndicator()
         observeCurrentPage()
         setupRecyclerView()
         fetchData()
     }
+
+    private fun setupAction() {
+        binding.imageView9.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
+        }
+    }
+
 
     private fun setupViewPager() {
         val viewPager: ViewPager2 = binding.vpHomeCarousel
@@ -89,6 +103,7 @@ class HomeFragment : Fragment() {
                 productList.clear()
                 productList.addAll(products)
                 binding.rvProduct.adapter = ProductAdapter(productList)
+                productList.reverse()
             },
             onError = { error ->
                 Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
