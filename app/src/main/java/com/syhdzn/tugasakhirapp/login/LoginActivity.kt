@@ -41,18 +41,62 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        firebaseAuth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+
+        setupView()
+        setupAction()
+        setupKeyboardClosing()
+
+    }
+
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
+
+    private fun setupAction() {
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
 
             }
         })
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+        val edLoginPassword = binding.edLoginPassword
+        val icShowPass = binding.icShowPass
 
-        setupKeyboardClosing()
-        setupView()
-        setupAction()
+        binding.btnLogin.setOnClickListener {
+            val email = binding.edLoginEmail.text.toString()
+            val password = binding.edLoginPassword.text.toString()
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginUser(email, password)
+            } else {
+                showEmptyDialog("Email and password cannot be empty")
+            }
+        }
+
+        binding.icShowPass.setOnClickListener {
+            togglePasswordVisibility(edLoginPassword, icShowPass)
+        }
+
+        binding.regisnow.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            finish()
+        }
+
+        binding.resetnow.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
+            finish()
+        }
     }
 
     private fun loginUser(email: String, password: String) {
@@ -131,48 +175,6 @@ class LoginActivity : AppCompatActivity() {
                 focusedView.clearFocus()
             }
             false
-        }
-    }
-
-    private fun setupView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
-    }
-
-    private fun setupAction() {
-        val edLoginPassword = binding.edLoginPassword
-        val icShowPass = binding.icShowPass
-
-        binding.btnLogin.setOnClickListener {
-            val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
-
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                loginUser(email, password)
-            } else {
-                showEmptyDialog("Email and password cannot be empty")
-            }
-        }
-
-        binding.icShowPass.setOnClickListener {
-            togglePasswordVisibility(edLoginPassword, icShowPass)
-        }
-
-        binding.regisnow.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
-            finish()
-        }
-
-        binding.resetnow.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
-            finish()
         }
     }
 

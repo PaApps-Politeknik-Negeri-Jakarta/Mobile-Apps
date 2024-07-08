@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityOrderSuccessBinding
@@ -26,6 +27,19 @@ class OrderSuccessActivity : AppCompatActivity() {
 
         binding.virtualCodeText.text = virtualCode
         binding.finalTotalText.text = formatPrice(finalTotal)
+
+        setupAction()
+    }
+
+    private fun setupAction() {
+
+        val virtualCode = intent.getStringExtra("VIRTUAL_CODE") ?: ""
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
 
         binding.copyIcon.setOnClickListener {
             copyToClipboard(virtualCode)

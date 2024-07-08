@@ -19,10 +19,11 @@ class CustomerViewModelFactory(private val application: Application) : ViewModel
             @Suppress("UNCHECKED_CAST")
             return CartViewModel(repository) as T
         }
-        if (modelClass.isAssignableFrom(CheckoutViewModel::class.java)) {  // Pastikan pengecekan ini benar
+        if (modelClass.isAssignableFrom(CheckoutViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return CheckoutViewModel(repository) as T
         }
+
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
