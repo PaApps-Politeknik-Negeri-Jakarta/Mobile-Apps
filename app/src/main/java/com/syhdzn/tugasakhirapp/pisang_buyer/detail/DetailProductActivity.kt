@@ -2,16 +2,16 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.detail
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
-import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
@@ -20,25 +20,38 @@ import java.text.NumberFormat
 import java.util.Locale
 
 class DetailProductActivity : AppCompatActivity() {
-    private var _binding: ActivityDetailProductBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityDetailProductBinding
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var viewModel: DetailViewModel
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityDetailProductBinding.inflate(layoutInflater)
+        binding = ActivityDetailProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setupView()
+        setupAction()
 
         firebaseRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
+    }
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
+
+    private fun setupAction() {
+        binding.back.setOnClickListener {
+            finish()
+        }
         val idbarang = intent.getStringExtra("ID")
         val name = intent.getStringExtra("NAME")
         val price = intent.getDoubleExtra("PRICE", 0.0)
