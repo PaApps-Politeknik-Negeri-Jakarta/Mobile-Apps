@@ -15,9 +15,8 @@ import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivitySellerDashboardBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.camera.CameraFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.add.AddFragment
-import com.syhdzn.tugasakhirapp.pisang_seller.chatseller.ChatSellerFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.order.list_buyer.OrderFragment
-import com.syhdzn.tugasakhirapp.pisang_seller.product.ProductListFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.ProductListFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.user.UserSellerFragment
 
 

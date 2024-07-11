@@ -20,7 +20,10 @@
         android:theme="@style/Theme.TugasAkhirApp"
         tools:targetApi="31">
         <activity
-            android:name=".chat.ChatActivity"
+            android:name=".pisang_seller.chatSeller.ChatSellerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.chat.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".pisang_seller.order.list_order_buyer.BuyerOrderActivity"

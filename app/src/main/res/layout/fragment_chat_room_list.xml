@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".pisang_seller.product.ChatRoomListFragment">
+    tools:context=".pisang_seller.chatSeller.ChatRoomListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChatRooms"
