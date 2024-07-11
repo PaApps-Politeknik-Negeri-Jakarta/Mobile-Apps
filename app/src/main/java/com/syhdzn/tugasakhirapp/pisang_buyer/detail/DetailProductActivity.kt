@@ -21,7 +21,7 @@ import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 
 import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
-import com.syhdzn.tugasakhirapp.chat.ChatActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.chat.ChatActivity
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
