@@ -10,22 +10,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:background="@drawable/bg_item_chat_receiver"
+        android:padding="8dp"
+        android:gravity="start">
 
         <TextView
             android:id="@+id/show_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sample message"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/timeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12:00"
-            android:textSize="10sp"
-            android:textColor="@android:color/darker_gray" />
+            android:textSize="12sp"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </LinearLayout>
