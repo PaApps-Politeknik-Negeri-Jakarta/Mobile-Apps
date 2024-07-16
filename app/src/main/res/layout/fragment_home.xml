@@ -328,6 +328,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="@+id/imageView9"
             app:layout_constraintStart_toStartOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="@+id/imageView9" />

@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -16,6 +17,7 @@ import com.syhdzn.tugasakhirapp.databinding.ActivityPaymentBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
+import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -50,6 +52,16 @@ class PaymentActivity : AppCompatActivity() {
 
         setupShippingMethodSpinner()
         setupPaymentMethodSpinner()
+        updateFinalTotal()
+        setupAction()
+    }
+
+    private fun setupAction() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
 
         binding.buttonConfirmPayment.setOnClickListener {
             setupLoading()
@@ -60,13 +72,8 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.btnBack.setOnClickListener{
-            startActivity(Intent(this, BuyerDashboardActivity::class.java).apply {
-                putExtra("switchToFragment", "CartFragment")
-                putExtra("selectMenuItem", R.id.cart)
-            })
+            finish()
         }
-
-        updateFinalTotal()
     }
 
     private fun setupViewModel() {

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -53,6 +54,28 @@ class UserSellerFragment : Fragment() {
         }
     }
 
+    private fun showDialogLogout() {
+        val customDialogView = layoutInflater.inflate(R.layout.costum_dialog_logout, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(customDialogView)
+            .create()
+
+        customDialogView.findViewById<Button>(R.id.btn_yes).setOnClickListener {
+            logOut()
+            requireActivity().finish()
+            dialog.dismiss()
+        }
+
+        customDialogView.findViewById<Button>(R.id.btn_no).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawableResource(R.drawable.bg_rounded_3)
+        customDialogView.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.anim))
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
     data class User(val fullname: String = "")
 
     private fun loadUserData() {
@@ -79,33 +102,17 @@ class UserSellerFragment : Fragment() {
         }
     }
 
-    private fun showDialogLogout() {
-        val customDialogView = layoutInflater.inflate(R.layout.costum_dialog_logout, null)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(customDialogView)
-            .create()
-
-        customDialogView.findViewById<Button>(R.id.btn_yes).setOnClickListener {
-            logOut()
-            requireActivity().finish()
-            dialog.dismiss()
-        }
-
-        customDialogView.findViewById<Button>(R.id.btn_no).setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.window?.setBackgroundDrawableResource(R.drawable.bg_rounded_3)
-        customDialogView.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.anim))
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+    private fun clearUserSession() {
+        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("USER_ID")
+        editor.apply()
     }
 
-
     private fun logOut() {
-        mAuth.signOut()
+        clearUserSession()
+//        mAuth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
-        activity?.finish()
     }
 }
