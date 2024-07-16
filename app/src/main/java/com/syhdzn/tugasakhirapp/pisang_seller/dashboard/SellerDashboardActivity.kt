@@ -15,8 +15,8 @@ import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivitySellerDashboardBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.camera.CameraFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.add.AddFragment
-import com.syhdzn.tugasakhirapp.pisang_seller.chatseller.ChatSellerFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.order.list_buyer.OrderFragment
+import com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.ProductListFragment
 import com.syhdzn.tugasakhirapp.pisang_seller.user.UserSellerFragment
 
 
@@ -32,10 +32,15 @@ class SellerDashboardActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
+                // Handle back press logic here if needed
             }
         })
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ProductListFragment())
+                .commit()
+        }
 
         setupView()
         firstSelectedItem()
@@ -56,7 +61,7 @@ class SellerDashboardActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun firstSelectedItem(){
+    private fun firstSelectedItem() {
         binding.menuBottom.setItemSelected(R.id.add, true)
         supportFragmentManager.beginTransaction().replace(R.id.container, AddFragment()).commit()
     }
@@ -67,8 +72,7 @@ class SellerDashboardActivity : AppCompatActivity() {
                 R.id.add -> fragment = AddFragment()
                 R.id.user -> fragment = UserSellerFragment()
                 R.id.order -> fragment = OrderFragment()
-                R.id.chatseller -> fragment = ChatSellerFragment()
-
+                R.id.chatseller -> fragment = ProductListFragment()
             }
 
             fragment?.let {
@@ -107,5 +111,4 @@ class SellerDashboardActivity : AppCompatActivity() {
             }
         })
     }
-
 }
