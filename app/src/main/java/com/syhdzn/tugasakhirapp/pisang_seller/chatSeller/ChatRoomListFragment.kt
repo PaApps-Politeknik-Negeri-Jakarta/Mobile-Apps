@@ -39,7 +39,7 @@ class ChatRoomListFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewChatRooms)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter = ChatRoomAdapter(requireContext(),chatRooms,productId) { chatRoom ->
+        adapter = ChatRoomAdapter(requireContext(), chatRooms, productId) { chatRoom ->
         }
         recyclerView.adapter = adapter
 

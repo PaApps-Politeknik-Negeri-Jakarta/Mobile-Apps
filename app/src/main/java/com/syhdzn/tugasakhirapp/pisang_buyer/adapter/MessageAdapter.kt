@@ -22,10 +22,10 @@ class MessageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == RIGHT) {
-            val view = inflater.inflate(R.layout.chat_item_sender, parent, false)
+            val view = inflater.inflate(R.layout.item_chat_sender, parent, false)
             MessageHolder(view)
         } else {
-            val view = inflater.inflate(R.layout.chat_item_reciever, parent, false)
+            val view = inflater.inflate(R.layout.item_chat_receiver, parent, false)
             MessageHolder(view)
         }
     }

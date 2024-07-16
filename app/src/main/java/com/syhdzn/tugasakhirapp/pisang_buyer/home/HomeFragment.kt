@@ -3,15 +3,18 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.home
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 
@@ -26,7 +30,9 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var productList: ArrayList<Product>
+    private lateinit var originalProductList: ArrayList<Product>
     private lateinit var firebaseRef: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
 
     private val imageIds = listOf(
         R.drawable.banner_1,
@@ -56,13 +62,53 @@ class HomeFragment : Fragment() {
 
         firebaseRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         productList = arrayListOf()
+        originalProductList = arrayListOf()
+        mAuth = FirebaseAuth.getInstance()
 
         setupViewPager()
         setupPageIndicator()
         observeCurrentPage()
         setupRecyclerView()
         fetchData()
+        loadUserData()
+
+        binding.allProduct.setOnClickListener {
+            fetchData()
+        }
+        binding.pisangAmbon.setOnClickListener {
+            filterProductsByName("Pisang Ambon")
+        }
+        binding.pisangUli.setOnClickListener {
+            filterProductsByName("Pisang Uli")
+        }
+        binding.pisangBarangan.setOnClickListener {
+            filterProductsByName("Pisang Barangan")
+        }
+        binding.pisangKepok.setOnClickListener {
+            filterProductsByName("Pisang Kepok")
+        }
+        binding.pisangTanduk.setOnClickListener {
+            filterProductsByName("Pisang Tanduk")
+        }
+        binding.pisangRaja.setOnClickListener {
+            filterProductsByName("Pisang Raja")
+        }
     }
+
+    private fun loadUserData() {
+        UserUtils.loadUserData(mAuth, firebaseRef) { fullname ->
+            if (fullname != null) {
+                Log.d("HomeFragment", fullname)
+                val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", AppCompatActivity.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("FULL_NAME", fullname)
+                editor.apply()
+            } else {
+                Log.d("UserFragment", "Failed to load user data")
+            }
+        }
+    }
+
 
     private fun setupViewPager() {
         val adapter = CarouselAdapter(imageIds)
@@ -87,7 +133,9 @@ class HomeFragment : Fragment() {
         firebaseRef.child("product").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 productList.clear()
+                originalProductList.clear()
                 snapshot.children.mapNotNullTo(productList) { it.getValue(Product::class.java) }
+                originalProductList.addAll(productList)
                 binding.rvProduct.adapter?.notifyDataSetChanged()
             }
 
@@ -95,6 +143,12 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun filterProductsByName(name: String) {
+        productList.clear()
+        productList.addAll(originalProductList.filter { it.nama_pisang == name })
+        binding.rvProduct.adapter?.notifyDataSetChanged()
     }
 
     private fun observeCurrentPage() {
