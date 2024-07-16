@@ -18,13 +18,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityResultBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartViewModel
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
-import com.syhdzn.tugasakhirapp.pisang_buyer.payment.OrderSuccessActivity
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer
@@ -37,12 +39,12 @@ class ResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultBinding
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var storageReference: StorageReference
     private lateinit var interpreter: Interpreter
     private lateinit var viewModel: CartViewModel
     private var averageWeight: Float = 0f
     private var isPredictionDone = false
     private var loadingDialog: SweetAlertDialog? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class ResultActivity : AppCompatActivity() {
         setupWindowInsets()
 
         databaseReference = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
+        storageReference = FirebaseStorage.getInstance().reference
         interpreter = Interpreter(loadModelFile())
 
         setupViewModel()
@@ -169,7 +172,7 @@ class ResultActivity : AppCompatActivity() {
         val quality = binding.tvKualitas.text.toString()
         var priceString = binding.tvHarga.text.toString().replace("[^\\d,]".toRegex(), "").replace(",", ".").trim()
         var price = priceString.toDoubleOrNull() ?: 0.0
-        val imageUrl = intent.getStringExtra("imageUri") ?: ""
+        val imageUriString = intent.getStringExtra("imageUri")
         val amount = 1
 
         if (name == "Unknown") {
@@ -192,8 +195,26 @@ class ResultActivity : AppCompatActivity() {
             showSuccessDialog("Banana is overripe, price reduced by 2000.")
         }
 
-        setupLoading()
+        if (imageUriString != null) {
+            setupLoading()
+            val imageUri = Uri.parse(imageUriString)
+            val imageRef = storageReference.child("cart_images/${imageUri.lastPathSegment}")
+            imageRef.putFile(imageUri)
+                .addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot ->
+                    imageRef.downloadUrl.addOnSuccessListener { uri: Uri ->
+                        saveCartItem(name, price, uri.toString(), amount)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    hideLoading()
+                    Toast.makeText(this, "Failed to upload image: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            saveCartItem(name, price, "", amount)
+        }
+    }
 
+    private fun saveCartItem(name: String, price: Double, imageUrl: String, amount: Int) {
         val cartEntity = CartEntity(
             id = 0,
             name = name,
