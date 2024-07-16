@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -72,26 +75,31 @@ class HomeFragment : Fragment() {
         fetchData()
         loadUserData()
 
-        binding.allProduct.setOnClickListener {
+        setupCategoryFilter(binding.pisangAmbon, binding.clearPisangAmbon, "Pisang Ambon")
+        setupCategoryFilter(binding.pisangUli, binding.clearPisangUli, "Pisang Uli")
+        setupCategoryFilter(binding.pisangBarangan, binding.clearPisangBarangan, "Pisang Barangan")
+        setupCategoryFilter(binding.pisangKepok, binding.clearPisangKepok, "Pisang Kepok")
+        setupCategoryFilter(binding.pisangTanduk, binding.clearPisangTanduk, "Pisang Tanduk")
+        setupCategoryFilter(binding.pisangRaja, binding.clearPisangRaja, "Pisang Raja")
+    }
+
+    private fun setupCategoryFilter(layout: LinearLayout, clearImage: ImageView, name: String) {
+        layout.setOnClickListener {
+            filterProductsByName(name)
+            if (clearImage.visibility != View.VISIBLE) {
+                clearImage.visibility = View.VISIBLE
+                val rotate = AnimationUtils.loadAnimation(context, R.anim.rotate)
+                clearImage.startAnimation(rotate)
+            }
+            clearImage.setOnClickListener {
+                clearImage.visibility = View.GONE
+                fetchData()
+            }
+        }
+
+        clearImage.setOnClickListener {
+            clearImage.visibility = View.GONE
             fetchData()
-        }
-        binding.pisangAmbon.setOnClickListener {
-            filterProductsByName("Pisang Ambon")
-        }
-        binding.pisangUli.setOnClickListener {
-            filterProductsByName("Pisang Uli")
-        }
-        binding.pisangBarangan.setOnClickListener {
-            filterProductsByName("Pisang Barangan")
-        }
-        binding.pisangKepok.setOnClickListener {
-            filterProductsByName("Pisang Kepok")
-        }
-        binding.pisangTanduk.setOnClickListener {
-            filterProductsByName("Pisang Tanduk")
-        }
-        binding.pisangRaja.setOnClickListener {
-            filterProductsByName("Pisang Raja")
         }
     }
 
@@ -108,7 +116,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
 
     private fun setupViewPager() {
         val adapter = CarouselAdapter(imageIds)

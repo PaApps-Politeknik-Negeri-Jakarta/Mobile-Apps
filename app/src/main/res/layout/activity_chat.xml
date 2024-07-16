@@ -53,15 +53,23 @@
         android:layout_margin="8dp"
         android:layout_alignParentBottom="true">
 
-        <EditText
-            android:id="@+id/et_chat"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/send"
-            android:autofillHints="Ketik pesan"
-            android:background="@drawable/bg_edit_text"
-            android:padding="16dp" />
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="20dp">
+
+            <EditText
+                android:id="@+id/et_chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints="Ketik pesan"
+                android:background="@color/white"
+                android:padding="16dp" />
+
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/send"
