@@ -17,6 +17,8 @@ import com.syhdzn.tugasakhirapp.databinding.FragmentCartBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.payment.PaymentActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.reset_pass.ResetPasswordActivity
+import com.syhdzn.tugasakhirapp.register.RegisterActivity
 
 class CartFragment : Fragment() {
 
@@ -36,19 +38,15 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerView()
+        setupAction()
         setupViewModel()
         observeViewModel()
 
         userId = getUserIdFromPreferences()
 
-        binding.btnCheckout.setOnClickListener {
-            if (cartAdapter.currentList.isNotEmpty()) {
-                navigateToPayment()
-            } else {
-                showEmptyDialog("Cart is empty, cannot proceed to checkout")
-            }
-        }
+
     }
 
     override fun onResume() {
@@ -64,6 +62,17 @@ class CartFragment : Fragment() {
         binding.rvCart.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = cartAdapter
+        }
+    }
+
+
+    private fun setupAction() {
+        binding.btnCheckout.setOnClickListener {
+            if (cartAdapter.currentList.isNotEmpty()) {
+                navigateToPayment()
+            } else {
+                showEmptyDialog("Cart is empty, cannot proceed to checkout")
+            }
         }
     }
 

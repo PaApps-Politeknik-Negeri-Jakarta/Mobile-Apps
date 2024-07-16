@@ -22,7 +22,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,29 +43,58 @@ android {
         buildConfig = true
         mlModelBinding = true
     }
+
+    bundle {
+        abi {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        language {
+            enableSplit = true
+        }
+    }
 }
 
 dependencies {
+    // Core libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Firebase
     implementation(libs.firebase.database)
     implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.storage.ktx)
+    implementation("com.google.firebase:firebase-auth:21.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
+    // CameraX
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.camera2)
+
+    // TensorFlow Lite
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.metadata)
-    implementation(libs.vision.common)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation ("org.tensorflow:tensorflow-lite:2.10.0")
+    implementation ("org.tensorflow:tensorflow-lite-select-tf-ops:2.10.0")
+
+    // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.storage)
+
+    // Image loading library
     implementation (libs.picasso)
+
     // Chip Navigation Bar library
     implementation(libs.chip.navigation.bar)
     implementation(libs.firebase.storage.ktx)
@@ -102,22 +132,20 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0-alpha04")
 
     // SweetAlert library
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Other library
     implementation("com.github.f0ris.sweetalert:library:1.6.2")
-
-    // Testing dependencies (junit, espresso, dll.)
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-
-    // Other dependencies
-    implementation("androidx.camera:camera-core:1.2.0")
-    implementation("androidx.camera:camera-camera2:1.2.0")
-    implementation("androidx.camera:camera-lifecycle:1.2.0")
-    implementation ("androidx.core:core-ktx:1.7.0")
     implementation ("com.github.sina-seyfi:AdvancedCardView:1.0.1")
     implementation ("com.github.amarjain07:StickyScrollView:1.0.3")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
-//    implementation ("com.github.didikk:sticky-nestedscrollview:1.0.1")
 
-
+    // Testing dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
