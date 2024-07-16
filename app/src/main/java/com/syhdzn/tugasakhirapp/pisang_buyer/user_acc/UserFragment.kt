@@ -32,6 +32,7 @@ class UserFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
     }
 
     override fun onCreateView(
@@ -44,9 +45,6 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mAuth = FirebaseAuth.getInstance()
-        mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         setupAction()
         loadUserData()
@@ -104,9 +102,8 @@ class UserFragment : Fragment() {
 
     private fun logOut() {
         clearUserSession()
-        mAuth.signOut()
+//        mAuth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
-        activity?.finish()
     }
 }

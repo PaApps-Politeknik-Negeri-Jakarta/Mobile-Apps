@@ -31,6 +31,8 @@ class CartViewModel(private val repository: CustomerRepository) : ViewModel() {
 
     private fun attachFirebaseListeners(items: List<CartEntity>) {
         items.forEach { item ->
+            if (item.ignoreCheck) return@forEach
+
             val listener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (!snapshot.exists()) {
@@ -59,7 +61,7 @@ class CartViewModel(private val repository: CustomerRepository) : ViewModel() {
     private fun removeCartItemById(id: Long) {
         viewModelScope.launch {
             val item = _cartItems.value?.find { it.id == id }
-            if (item != null) {
+            if (item != null && !item.ignoreCheck) {  // Check ignoreCheck flag before removing
                 repository.removeCartItemById(id)
                 removeFirebaseListener(item.idbarang)
                 Log.d("CartViewModel", "Removed item from cart by id: $id")
@@ -81,6 +83,8 @@ class CartViewModel(private val repository: CustomerRepository) : ViewModel() {
             val cartItems = repository.getAllCartItems().value ?: emptyList()
             Log.d("CartViewModel", "Current cart items: $cartItems")
             cartItems.forEach { item ->
+                if (item.ignoreCheck) return@forEach
+
                 Log.d("CartViewModel", "Checking item: ${item.idbarang}")
                 firebaseRef.child(item.idbarang).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -97,6 +101,13 @@ class CartViewModel(private val repository: CustomerRepository) : ViewModel() {
                     }
                 })
             }
+        }
+    }
+
+    fun addCartItemWithoutCheck(cartEntity: CartEntity) {
+        viewModelScope.launch {
+            repository.addToCart(cartEntity)
+            Log.d("CartViewModel", "Added item to cart without checking: ${cartEntity.idbarang}")
         }
     }
 }
