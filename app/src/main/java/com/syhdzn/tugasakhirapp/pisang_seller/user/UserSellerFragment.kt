@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentUserSellerBinding
 import com.syhdzn.tugasakhirapp.login.LoginActivity
-import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
 
 class UserSellerFragment : Fragment() {
 
@@ -112,7 +111,7 @@ class UserSellerFragment : Fragment() {
 
     private fun logOut() {
         clearUserSession()
-        mAuth.signOut()
+//        mAuth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
     }
