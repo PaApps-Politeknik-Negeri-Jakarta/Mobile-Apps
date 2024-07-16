@@ -1,5 +1,6 @@
 package com.syhdzn.tugasakhirapp.pisang_buyer.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -54,6 +55,10 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
 
             root.setOnClickListener {
                 val context = holder.itemView.context
+
+                val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                val fullname = sharedPreferences.getString("FULL_NAME", "") ?: ""
+
                 val intent = Intent(context, DetailProductActivity::class.java).apply {
                     putExtra("ID", currentItem.id)
                     putExtra("NAME", currentItem.nama_pisang)
@@ -61,6 +66,7 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
                     putExtra("QUALITY", currentItem.kualitas)
                     putExtra("WEIGHT", currentItem.berat)
                     putExtra("IMG", currentItem.image_url)
+                    putExtra("FULL_NAME", fullname)
                 }
                 context.startActivity(intent)
             }

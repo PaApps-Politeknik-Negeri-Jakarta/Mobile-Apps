@@ -19,11 +19,10 @@ import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
-
 import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
 import com.syhdzn.tugasakhirapp.pisang_buyer.chat.ChatActivity
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
-import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.payment.PaymentActivity
 import java.text.NumberFormat
@@ -34,6 +33,9 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var viewModel: DetailViewModel
     private lateinit var currentUserId: String
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: DatabaseReference
+    private var fullName: String? = null
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,9 @@ class DetailProductActivity : AppCompatActivity() {
         setupWindowInsets()
         firebaseRef = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
+        mAuth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance().reference
+
         currentUserId = getUserIdFromPreferences()
 
         val idbarang = intent.getStringExtra("ID")
@@ -52,6 +57,8 @@ class DetailProductActivity : AppCompatActivity() {
         val quality = intent.getStringExtra("QUALITY")
         val weight = intent.getIntExtra("WEIGHT", 0)
         val imgUri = intent.getStringExtra("IMG")
+        fullName = intent.getStringExtra("FULL_NAME") // Terima fullname dari Intent
+
         val formattedPrice = formatPrice(price.toFloat())
 
         binding.tvProductNameDetail.text = name
@@ -79,11 +86,17 @@ class DetailProductActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.back.setOnClickListener {
-            startActivity(Intent(this, BuyerDashboardActivity::class.java))
+            onBackPressed()
         }
         binding.chat.setOnClickListener {
+            Log.d("DetailActivity", "Chat button clicked")
             if (idbarang != null) {
-                navigateToChat(idbarang)
+                name?.let { it1 ->
+                    Log.d("DetailActivity", "Navigating to chat with idbarang: $idbarang")
+                    navigateToChat(idbarang)
+                }
+            } else {
+                Log.d("DetailActivity", "idbarang is null")
             }
         }
 
@@ -132,23 +145,28 @@ class DetailProductActivity : AppCompatActivity() {
 
     private fun navigateToChat(receiverId: String) {
         val userId = getUserIdFromPreferences()
-        Log.d("DetailActivity", "Navigating to chat with ID: $userId")
+        val image = intent.getStringExtra("IMG") ?: ""
+        val name = intent.getStringExtra("NAME") ?: ""
 
-        checkChatRoomExistence(userId, receiverId) { chatRoomId ->
-            if (chatRoomId.isNotEmpty()) {
-                openChatActivity(chatRoomId)
-            } else {
-                createNewChatRoom(userId, receiverId)
+        // Gunakan fullname yang sudah diterima dari Intent
+        fullName?.let { userName ->
+            checkChatRoomExistence(receiverId) { chatRoomId ->
+                if (chatRoomId.isNotEmpty()) {
+                    openChatActivity(chatRoomId, image, name, userName)
+                } else {
+                    createNewChatRoom(userId, receiverId, image, name, userName)
+                }
             }
         }
     }
 
-
-    private fun checkChatRoomExistence(userId: String, receiverId: String, callback: (String) -> Unit) {
+    private fun checkChatRoomExistence(receiverId: String, callback: (String) -> Unit) {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         val chatRoomQuery1 = "${currentUserId}_$receiverId"
         val chatRoomQuery2 = "${receiverId}_$currentUserId"
+
+        Log.d("DetailActivity", "Checking chat room existence for queries: $chatRoomQuery1, $chatRoomQuery2")
 
         firebaseRef.child("chats")
             .orderByChild("senderId_receiverId").equalTo(chatRoomQuery1)
@@ -158,6 +176,7 @@ class DetailProductActivity : AppCompatActivity() {
                         for (childSnapshot in snapshot.children) {
                             val chatRoomId = childSnapshot.key ?: ""
                             if (chatRoomId.isNotEmpty()) {
+                                Log.d("DetailActivity", "Chat room exists: $chatRoomId")
                                 callback(chatRoomId)
                                 return
                             }
@@ -171,15 +190,18 @@ class DetailProductActivity : AppCompatActivity() {
                                         for (childSnapshot in snapshot.children) {
                                             val chatRoomId = childSnapshot.key ?: ""
                                             if (chatRoomId.isNotEmpty()) {
+                                                Log.d("DetailActivity", "Chat room exists: $chatRoomId")
                                                 callback(chatRoomId)
                                                 return
                                             }
                                         }
                                     }
+                                    Log.d("DetailActivity", "No chat room found")
                                     callback("") // No chat room found
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
+                                    Log.d("DetailActivity", "Database error: ${error.message}")
                                     callback("") // Error handling
                                 }
                             })
@@ -187,15 +209,14 @@ class DetailProductActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    Log.d("DetailActivity", "Database error: ${error.message}")
                     callback("") // Error handling
                 }
             })
     }
 
-
-    private fun createNewChatRoom(userId: String, receiverId: String) {
+    private fun createNewChatRoom(userId: String, receiverId: String, image: String, name: String, userName: String) {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
         val chatRoomId = firebaseRef.child("chats").push().key
 
         if (chatRoomId != null) {
@@ -203,11 +224,14 @@ class DetailProductActivity : AppCompatActivity() {
                 chatRoomId = chatRoomId,
                 senderId = currentUserId,
                 receiverId = receiverId,
-                senderId_receiverId = "${currentUserId}_$receiverId"  // Field for combination
+                senderId_receiverId = "${currentUserId}_$receiverId",  // Field for combination
+                userName = userName // Add userName here
             )
+            Log.d("DetailActivity", "Creating chat room: $chatRoom")
             firebaseRef.child("chats").child(chatRoomId).setValue(chatRoom).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    openChatActivity(chatRoomId)
+                    Log.d("DetailActivity", "Chat room created successfully")
+                    openChatActivity(chatRoomId, image, name, userName)
                 } else {
                     Log.e("DetailActivity", "Failed to create chat room", task.exception)
                 }
@@ -217,39 +241,13 @@ class DetailProductActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun openChatActivity(chatRoomId: String) {
-        val intent = Intent(this, ChatActivity::class.java)
-        intent.putExtra("CHAT_ROOM_ID", chatRoomId)
+    private fun openChatActivity(chatRoomId: String, image: String, name: String, userName: String) {
+        val intent = Intent(this, ChatActivity::class.java).apply {
+            putExtra("CHAT_ROOM_ID", chatRoomId)
+            putExtra("IMG", image)
+            putExtra("NAME", name)
+            putExtra("FULL_NAME", userName)
+        }
         startActivity(intent)
     }
-
-//    private fun getUserNameFromPreferences(callback: (String) -> Unit) {
-//        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
-//        val userId = sharedPreferences.getString("USER_ID", "") ?: return
-//
-//        // Ambil data pengguna berdasarkan USER_ID
-//        firebaseRef.child("users").child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()) {
-//                    val fullname = snapshot.child("fullname").getValue(String::class.java)
-//                    if (fullname != null) {
-//                        callback(fullname)
-//                    } else {
-//                        callback("")  // Atau nilai default lain jika fullname tidak ada
-//                    }
-//                } else {
-//                    callback("")  // Atau nilai default lain jika user tidak ditemukan
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Handle error
-//                callback("")  // Atau nilai default lain jika terjadi error
-//            }
-//        })
-//    }
-
 }
-
-

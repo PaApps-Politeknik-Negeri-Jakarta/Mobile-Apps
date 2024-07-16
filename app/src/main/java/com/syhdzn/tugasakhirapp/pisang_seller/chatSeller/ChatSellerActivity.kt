@@ -25,10 +25,12 @@ class ChatSellerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatSellerBinding
     private lateinit var database: DatabaseReference
     private lateinit var chatRoomId: String
-    private lateinit var productId: String // Add productId variable
+    private lateinit var productId: String
+    private lateinit var receiverName: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageInput: EditText
     private lateinit var sendButton: ImageView
+    private lateinit var backButton: ImageView
 
     private val messages = mutableListOf<Message>()
     private lateinit var adapter: MessageSellerAdapter
@@ -40,11 +42,14 @@ class ChatSellerActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         chatRoomId = intent.getStringExtra("chatRoomId") ?: return
-        productId = intent.getStringExtra("productID") ?: return // Retrieve productId
+        productId = intent.getStringExtra("productID") ?: return
+        receiverName = intent.getStringExtra("receiverName") ?: return
 
         recyclerView = binding.rvChat
         messageInput = binding.etChat
         sendButton = binding.send
+        backButton = binding.back
+        binding.name.text = receiverName
 
         adapter = MessageSellerAdapter(messages, productId)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -53,7 +58,9 @@ class ChatSellerActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
             sendMessage()
         }
-
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
         listenForMessages()
     }
 

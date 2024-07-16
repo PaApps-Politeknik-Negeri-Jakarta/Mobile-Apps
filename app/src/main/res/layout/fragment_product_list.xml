@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/container"
+    android:background="@drawable/back_ground"
     tools:context=".pisang_seller.chatSeller.ProductListFragment">
 
     <androidx.recyclerview.widget.RecyclerView

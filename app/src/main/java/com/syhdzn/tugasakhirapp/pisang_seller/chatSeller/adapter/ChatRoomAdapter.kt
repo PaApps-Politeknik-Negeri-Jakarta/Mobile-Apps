@@ -19,10 +19,10 @@ class ChatRoomAdapter(
 ) : RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder>() {
 
     class ChatRoomViewHolder(view: View, val clickListener: (ChatRoom) -> Unit) : RecyclerView.ViewHolder(view) {
-        private val chatRoomId: TextView = view.findViewById(R.id.chatRoomId)
+        private val receiverName: TextView = view.findViewById(R.id.receiverName)
 
         fun bind(chatRoom: ChatRoom, clickListener: (ChatRoom) -> Unit) {
-            chatRoomId.text = chatRoom.chatRoomId
+            receiverName.text = chatRoom.userName
             itemView.setOnClickListener {
                 clickListener(chatRoom)
             }
@@ -39,6 +39,7 @@ class ChatRoomAdapter(
             val intent = Intent(context, ChatSellerActivity::class.java).apply {
                 putExtra("chatRoomId", chatRoom.chatRoomId)
                 putExtra("productID", productId)
+                putExtra("receiverName", chatRoom.userName)
             }
             context.startActivity(intent)
         }
@@ -46,4 +47,5 @@ class ChatRoomAdapter(
 
     override fun getItemCount() = chatRooms.size
 }
+
 
