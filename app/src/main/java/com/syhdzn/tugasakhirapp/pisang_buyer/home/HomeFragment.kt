@@ -1,5 +1,6 @@
 package com.syhdzn.tugasakhirapp.pisang_buyer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +14,9 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -27,7 +30,9 @@ import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
+import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -73,6 +78,7 @@ class HomeFragment : Fragment() {
         observeCurrentPage()
         setupRecyclerView()
         fetchData()
+        setupAction()
         loadUserData()
 
         setupCategoryFilter(binding.pisangAmbon, binding.clearPisangAmbon, "Pisang Ambon")
@@ -100,6 +106,14 @@ class HomeFragment : Fragment() {
         clearImage.setOnClickListener {
             clearImage.visibility = View.GONE
             fetchData()
+        }
+    }
+    private fun setupAction() {
+
+        binding.imageView9.setOnClickListener{
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
         }
     }
 
