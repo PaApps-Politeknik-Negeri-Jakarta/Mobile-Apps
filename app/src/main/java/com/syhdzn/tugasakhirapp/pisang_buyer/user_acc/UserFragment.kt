@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.FragmentUserBinding
 import com.syhdzn.tugasakhirapp.login.LoginActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
 
 class UserFragment : Fragment() {
@@ -31,6 +32,7 @@ class UserFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
     }
 
     override fun onCreateView(
@@ -43,9 +45,6 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mAuth = FirebaseAuth.getInstance()
-        mDatabase = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         setupAction()
         loadUserData()
@@ -84,29 +83,13 @@ class UserFragment : Fragment() {
         dialog.show()
     }
 
-    data class User(val fullname: String = "")
-
     private fun loadUserData() {
-        val currentUser = mAuth.currentUser
-        if (currentUser != null) {
-            val uid = currentUser.uid
-            mDatabase.child("users").child(uid).addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val user = snapshot.getValue(User::class.java)
-                    if (user != null) {
-                        binding.tvNama.text = user.fullname
-                    } else {
-                        Log.d("UserFragment", "User data is null")
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("UserFragment", "Database error: ${error.message}")
-                }
-            })
-        } else {
-            Log.d("UserFragment", "Current user is null")
+        UserUtils.loadUserData(mAuth, mDatabase) { fullname ->
+            if (fullname != null) {
+                binding.tvNama.text = fullname
+            } else {
+                Log.d("UserFragment", "Failed to load user data")
+            }
         }
     }
 
@@ -119,9 +102,8 @@ class UserFragment : Fragment() {
 
     private fun logOut() {
         clearUserSession()
-        mAuth.signOut()
+//        mAuth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
         startActivity(intent)
-        activity?.finish()
     }
 }

@@ -29,6 +29,12 @@
             android:name=".pisang_seller.order.list_order_buyer.BuyerOrderActivity"
             android:exported="false" />
         <activity
+            android:name=".pisang_seller.chatSeller.ChatSellerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".pisang_buyer.chat.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".pisang_buyer.history.detail_history.OrderDetailActivity"
             android:exported="false" />
         <activity
