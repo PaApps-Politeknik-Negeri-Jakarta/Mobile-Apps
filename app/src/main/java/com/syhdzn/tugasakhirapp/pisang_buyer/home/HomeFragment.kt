@@ -67,6 +67,7 @@ class HomeFragment : Fragment() {
         observeCurrentPage()
         setupRecyclerView()
         fetchData()
+        setupAction()
     }
 
     private fun setupAction() {
