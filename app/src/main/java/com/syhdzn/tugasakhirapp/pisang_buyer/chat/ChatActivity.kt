@@ -44,7 +44,7 @@ class ChatActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
         chatRoomId = intent.getStringExtra("CHAT_ROOM_ID") ?: return
-        image = intent.getStringExtra("IMAGE") ?: ""
+        image = intent.getStringExtra("IMG") ?: ""
         name = intent.getStringExtra("NAME") ?: ""
 
         recyclerView = binding.rvChat

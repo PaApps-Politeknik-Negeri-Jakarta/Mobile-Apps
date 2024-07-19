@@ -29,7 +29,9 @@ class ProductAdapterSeller(private val products: List<Product>, private val clic
         val currentItem = products[position]
         holder.binding.apply {
             productNameSeller.text = currentItem.nama_pisang
-            val radius = 8
+            productWeightSeller.text = currentItem.berat.toString()
+
+            val radius = 10
             val requestOptions = RequestOptions()
                 .override(150, 150)
                 .transform(CenterCrop(), RoundedCorners(radius))

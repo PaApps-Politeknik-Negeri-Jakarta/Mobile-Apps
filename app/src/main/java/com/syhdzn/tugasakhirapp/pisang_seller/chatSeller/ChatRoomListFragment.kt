@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -14,13 +16,16 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
+import com.syhdzn.tugasakhirapp.databinding.FragmentChatRoomListBinding
 import com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.adapter.ChatRoomAdapter
 
 class ChatRoomListFragment : Fragment() {
 
+    private lateinit var binding: FragmentChatRoomListBinding
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatRoomAdapter
+    private lateinit var backButton: ImageView
     private val chatRooms = mutableListOf<ChatRoom>()
     private lateinit var productId: String
 
@@ -33,18 +38,25 @@ class ChatRoomListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding = FragmentChatRoomListBinding.inflate(layoutInflater)
         productId = arguments?.getString("productId") ?: return
-
         recyclerView = view.findViewById(R.id.recyclerViewChatRooms)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter = ChatRoomAdapter(requireContext(), chatRooms, productId) { chatRoom ->
         }
         recyclerView.adapter = adapter
+        backButton = binding.back
 
         database = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         fetchChatRooms(productId)
+
+        backButton.setOnClickListener {
+            val fragment = ProductListFragment()
+            fragmentManager?.beginTransaction()?.replace(R.id.ChatRoomListContainer, fragment)?.addToBackStack(null)?.commit()
+//            fragmentManager?.popBackStack()
+//            findNavController().navigateUp()
+        }
     }
 
     private fun fetchChatRooms(productId: String) {

@@ -33,7 +33,6 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         recyclerView = view.findViewById(R.id.recyclerViewProducts)
         recyclerView.layoutManager = LinearLayoutManager(context)
 

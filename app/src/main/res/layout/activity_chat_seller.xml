@@ -17,15 +17,15 @@
             android:id="@+id/back"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/back"/>
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_back"/>
 
         <ImageView
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/user"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@drawable/user" />
 
         <TextView
             android:id="@+id/name"

@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/back_ground"
+    android:id="@+id/ChatRoomListContainer"
     tools:context=".pisang_seller.chatSeller.ChatRoomListFragment">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_back"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChatRooms"
