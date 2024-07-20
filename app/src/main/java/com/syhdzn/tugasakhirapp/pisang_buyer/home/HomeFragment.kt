@@ -1,5 +1,6 @@
 package com.syhdzn.tugasakhirapp.pisang_buyer.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,6 +29,8 @@ import com.syhdzn.tugasakhirapp.databinding.FragmentHomeBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
+import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
+import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -74,6 +77,7 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
         fetchData()
         loadUserData()
+        setupAction()
 
         setupCategoryFilter(binding.pisangAmbon, binding.clearPisangAmbon, "Pisang Ambon")
         setupCategoryFilter(binding.pisangUli, binding.clearPisangUli, "Pisang Uli")
@@ -100,6 +104,12 @@ class HomeFragment : Fragment() {
         clearImage.setOnClickListener {
             clearImage.visibility = View.GONE
             fetchData()
+        }
+    }
+    private fun setupAction() {
+        binding.imageView9.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 
