@@ -32,6 +32,7 @@ import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
+import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 
 class HomeFragment : Fragment() {
@@ -80,6 +81,7 @@ class HomeFragment : Fragment() {
         fetchData()
         setupAction()
         loadUserData()
+        setupAction()
 
         setupCategoryFilter(binding.pisangAmbon, binding.clearPisangAmbon, "Pisang Ambon")
         setupCategoryFilter(binding.pisangUli, binding.clearPisangUli, "Pisang Uli")
@@ -109,11 +111,13 @@ class HomeFragment : Fragment() {
         }
     }
     private fun setupAction() {
-
-        binding.imageView9.setOnClickListener{
+        binding.imageView9.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
+            binding.imageView9.setOnClickListener {
+                val intent = Intent(requireContext(), SearchActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+            }
         }
     }
 
