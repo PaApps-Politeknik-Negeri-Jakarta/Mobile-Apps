@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 pisangList.clear()
-                for (dataSnapshot in snapshot.children.reversed()) { // Ambil dari yang terbaru
+                for (dataSnapshot in snapshot.children.reversed()) {
                     val pisang = dataSnapshot.getValue(Pisang::class.java)
                     if (pisang != null) {
                         pisangList.add(pisang)
