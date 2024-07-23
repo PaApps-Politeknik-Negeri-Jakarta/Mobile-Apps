@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -33,11 +31,55 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var interpreter: Interpreter
 
     private val pisangInfoList = mapOf(
-        "Pisang Kepok" to "Pisang yang cocok untuk gorengan adalah pisang kepok.",
         "Pisang Ambon" to "Pisang yang cocok untuk smoothie adalah pisang ambon.",
+        "Pisang Barangan" to "Pisang yang cocok untuk dikonsumsi langsung adalah pisang barangan.",
+        "Pisang Kepok" to "Pisang yang cocok untuk gorengan adalah pisang kepok.",
+        "Pisang Raja" to "Pisang yang cocok untuk bubur pisang adalah pisang raja.",
         "Pisang Tanduk" to "Pisang yang cocok untuk direbus adalah pisang tanduk.",
         "Pisang Uli" to "Pisang yang cocok untuk nugget pisang adalah pisang uli.",
-        "Pisang Raja" to "Pisang yang cocok untuk bubur pisang adalah pisang raja."
+        "Pisang Ambon adalah salah satu varietas pisang yang sering digunakan untuk jus dan smoothies." to "Pisang Ambon adalah salah satu varietas pisang yang sering digunakan untuk jus dan smoothies.",
+        "Pisang Barangan memiliki tekstur yang lembut dan manis, cocok untuk dimakan langsung." to "Pisang Barangan memiliki tekstur yang lembut dan manis, cocok untuk dimakan langsung.",
+        "Pisang Kepok sering digunakan dalam olahan pisang goreng karena teksturnya yang padat." to "Pisang Kepok sering digunakan dalam olahan pisang goreng karena teksturnya yang padat.",
+        "Pisang Raja sangat populer untuk dijadikan bahan dasar pisang bakar dan kolak." to "Pisang Raja sangat populer untuk dijadikan bahan dasar pisang bakar dan kolak.",
+        "Pisang Tanduk memiliki ukuran yang besar dan sering digunakan dalam pembuatan keripik pisang." to "Pisang Tanduk memiliki ukuran yang besar dan sering digunakan dalam pembuatan keripik pisang.",
+        "Pisang Uli memiliki rasa yang manis dan tekstur yang kenyal, cocok untuk dibuat pisang goreng." to "Pisang Uli memiliki rasa yang manis dan tekstur yang kenyal, cocok untuk dibuat pisang goreng.",
+        // Tambahkan lebih banyak pengetahuan sesuai permintaan
+        "Pisang Ambon cocok untuk dikonsumsi langsung maupun diolah menjadi berbagai hidangan." to "Pisang Ambon cocok untuk dikonsumsi langsung maupun diolah menjadi berbagai hidangan.",
+        "Pisang Barangan dapat dibuat menjadi pisang bakar yang lezat." to "Pisang Barangan dapat dibuat menjadi pisang bakar yang lezat.",
+        "Pisang Kepok juga enak dimakan langsung atau dibuat kolak." to "Pisang Kepok juga enak dimakan langsung atau dibuat kolak.",
+        "Pisang Raja cocok untuk dibuat bubur pisang atau digoreng." to "Pisang Raja cocok untuk dibuat bubur pisang atau digoreng.",
+        "Pisang Tanduk sangat cocok untuk dibuat pisang goreng." to "Pisang Tanduk sangat cocok untuk dibuat pisang goreng.",
+        "Pisang Uli bisa diolah menjadi keripik pisang yang renyah." to "Pisang Uli bisa diolah menjadi keripik pisang yang renyah.",
+        "Pisang Ambon banyak digunakan dalam pembuatan kue pisang." to "Pisang Ambon banyak digunakan dalam pembuatan kue pisang.",
+        "Pisang Barangan sering dijadikan bahan utama dalam es campur." to "Pisang Barangan sering dijadikan bahan utama dalam es campur.",
+        "Pisang Kepok memiliki rasa yang manis dan tekstur yang kenyal." to "Pisang Kepok memiliki rasa yang manis dan tekstur yang kenyal.",
+        "Pisang Raja sering digunakan dalam pembuatan pisang molen." to "Pisang Raja sering digunakan dalam pembuatan pisang molen.",
+        "Pisang Tanduk bisa dijadikan bahan dasar untuk pisang sale." to "Pisang Tanduk bisa dijadikan bahan dasar untuk pisang sale.",
+        "Pisang Uli cocok untuk dibuat kolak pisang." to "Pisang Uli cocok untuk dibuat kolak pisang.",
+        "Pisang Ambon sering diolah menjadi jus pisang yang segar." to "Pisang Ambon sering diolah menjadi jus pisang yang segar.",
+        "Pisang Barangan bisa dimakan langsung sebagai buah segar." to "Pisang Barangan bisa dimakan langsung sebagai buah segar.",
+        "Pisang Kepok sering digunakan dalam resep pisang bolen." to "Pisang Kepok sering digunakan dalam resep pisang bolen.",
+        "Pisang Raja enak dimakan langsung atau sebagai tambahan pada es krim." to "Pisang Raja enak dimakan langsung atau sebagai tambahan pada es krim.",
+        "Pisang Tanduk sering diolah menjadi pisang kremes yang lezat." to "Pisang Tanduk sering diolah menjadi pisang kremes yang lezat.",
+        "Pisang Uli bisa diolah menjadi pisang goreng yang renyah." to "Pisang Uli bisa diolah menjadi pisang goreng yang renyah.",
+        "Pisang Ambon cocok untuk dijadikan bahan dasar smoothies." to "Pisang Ambon cocok untuk dijadikan bahan dasar smoothies.",
+        "Pisang Barangan memiliki rasa yang manis dan cocok untuk makanan penutup." to "Pisang Barangan memiliki rasa yang manis dan cocok untuk makanan penutup.",
+        "Pisang Kepok sering digunakan dalam pembuatan getuk pisang." to "Pisang Kepok sering digunakan dalam pembuatan getuk pisang.",
+        "Pisang Raja sangat cocok untuk dibuat pisang bakar keju." to "Pisang Raja sangat cocok untuk dibuat pisang bakar keju.",
+        "Pisang Tanduk enak dimakan langsung atau direbus." to "Pisang Tanduk enak dimakan langsung atau direbus.",
+        "Pisang Uli sering digunakan dalam resep pisang goreng madu." to "Pisang Uli sering digunakan dalam resep pisang goreng madu.",
+        "Pisang Ambon dapat dijadikan bahan dasar kue bolu pisang." to "Pisang Ambon dapat dijadikan bahan dasar kue bolu pisang.",
+        "Pisang Barangan enak dimakan langsung atau dijadikan topping es krim." to "Pisang Barangan enak dimakan langsung atau dijadikan topping es krim.",
+        "Pisang Kepok bisa diolah menjadi pisang goreng krispi." to "Pisang Kepok bisa diolah menjadi pisang goreng krispi.",
+        "Pisang Raja enak dimakan langsung atau sebagai campuran pada es campur." to "Pisang Raja enak dimakan langsung atau sebagai campuran pada es campur.",
+        "Pisang Tanduk sering diolah menjadi pisang cokelat." to "Pisang Tanduk sering diolah menjadi pisang cokelat.",
+        "Pisang Uli cocok untuk dijadikan pisang goreng tepung." to "Pisang Uli cocok untuk dijadikan pisang goreng tepung.",
+        "Pisang Ambon sering digunakan dalam pembuatan pancake pisang." to "Pisang Ambon sering digunakan dalam pembuatan pancake pisang.",
+        "Pisang Barangan memiliki tekstur lembut yang cocok untuk bayi." to "Pisang Barangan memiliki tekstur lembut yang cocok untuk bayi.",
+        "Pisang Kepok sering diolah menjadi pisang goreng tepung roti." to "Pisang Kepok sering diolah menjadi pisang goreng tepung roti.",
+        "Pisang Raja sangat cocok untuk dibuat pisang cokelat keju." to "Pisang Raja sangat cocok untuk dibuat pisang cokelat keju.",
+        "Pisang Tanduk sering digunakan dalam pembuatan pisang sale." to "Pisang Tanduk sering digunakan dalam pembuatan pisang sale.",
+        "Pisang Uli enak dimakan langsung atau diolah menjadi pisang goreng." to "Pisang Uli enak dimakan langsung atau diolah menjadi pisang goreng."
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,11 +106,11 @@ class SearchActivity : AppCompatActivity() {
     private fun setupAction() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
+                // Handle back press
             }
         })
 
-        binding.btnBack.setOnClickListener{
+        binding.btnBack.setOnClickListener {
             val intent = Intent(this, BuyerDashboardActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(intent)
@@ -117,10 +159,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchPisang(query: String) {
         val resultText = predict(query)
-        val pisangType = getPisangType(query)
         val filteredList = pisangList.filter {
             it.nama_pisang.contains(query, ignoreCase = true) ||
-                    it.nama_pisang.equals(pisangType, ignoreCase = true)
+                    it.nama_pisang.equals(getPisangType(resultText), ignoreCase = true)
         }
 
         binding.resultTextView.text = resultText
@@ -130,14 +171,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun getPisangType(query: String): String {
-        return when {
-            query.contains("goreng", ignoreCase = true) -> "Pisang Kepok"
-            query.contains("smoothie", ignoreCase = true) -> "Pisang Ambon"
-            query.contains("rebus", ignoreCase = true) -> "Pisang Tanduk"
-            query.contains("nugget", ignoreCase = true) -> "Pisang Uli"
-            query.contains("bubur", ignoreCase = true) -> "Pisang Raja"
-            else -> ""
+        for ((key, _) in pisangInfoList) {
+            if (query.contains(key, ignoreCase = true)) {
+                return key
+            }
         }
+        return ""
     }
 
     private fun loadModelFile(context: Context, modelName: String): MappedByteBuffer {
@@ -181,7 +220,41 @@ class SearchActivity : AppCompatActivity() {
         outputBuffer.rewind()
         val prediction = outputBuffer.float
 
-        return if (prediction > 0.5) pisangInfoList[getPisangType(inputText)] ?: "Informasi mengenai $inputText tidak ditemukan."
-        else "Informasi mengenai $inputText tidak ditemukan."
+        return if (prediction > 0.5) {
+            // Mencocokkan langsung dengan pengetahuan yang ada
+            val bestMatch = pisangInfoList.keys.maxByOrNull { key ->
+                fuzzyMatch(inputText, key)
+            }
+            pisangInfoList[bestMatch] ?: "Informasi mengenai $inputText tidak ditemukan."
+        } else {
+            "Informasi mengenai $inputText tidak ditemukan."
+        }
+    }
+
+    private fun fuzzyMatch(query: String, key: String): Int {
+        val levenshteinDistance = calculateLevenshteinDistance(query.toLowerCase(), key.toLowerCase())
+        return 100 - (levenshteinDistance * 100 / maxOf(query.length, key.length))
+    }
+
+    private fun calculateLevenshteinDistance(str1: String, str2: String): Int {
+        val dp = Array(str1.length + 1) { IntArray(str2.length + 1) }
+
+        for (i in 0..str1.length) {
+            for (j in 0..str2.length) {
+                if (i == 0) {
+                    dp[i][j] = j
+                } else if (j == 0) {
+                    dp[i][j] = i
+                } else {
+                    dp[i][j] = minOf(
+                        dp[i - 1][j - 1] + if (str1[i - 1] == str2[j - 1]) 0 else 1,
+                        dp[i - 1][j] + 1,
+                        dp[i][j - 1] + 1
+                    )
+                }
+            }
+        }
+
+        return dp[str1.length][str2.length]
     }
 }

@@ -87,7 +87,7 @@ class SellerDashboardActivity : AppCompatActivity() {
 
         if (switchToFragment != null) {
             when (switchToFragment) {
-                "OrderFragment" -> switchToDetectionFragment()
+                "OrderFragment", "ChatFragment" -> switchToDetectionFragment()
             }
         }
 

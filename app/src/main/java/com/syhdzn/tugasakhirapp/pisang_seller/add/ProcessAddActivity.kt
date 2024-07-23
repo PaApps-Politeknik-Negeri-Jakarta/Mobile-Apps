@@ -34,6 +34,7 @@ import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.FileChannel
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -141,7 +142,7 @@ class ProcessAddActivity : AppCompatActivity() {
         databaseReference.child(dataId).setValue(data)
             .addOnSuccessListener {
                 hideLoading()
-                showSuccessDialogBuyer("Product berhasil ditambahkan")
+                showSuccessDialogAddBuyer("Product berhasil ditambahkan")
             }
             .addOnFailureListener { e ->
                 hideLoading()
@@ -162,9 +163,8 @@ class ProcessAddActivity : AppCompatActivity() {
             val hargaText = binding.tvHarga.text.toString()
             val harga = parsePrice(hargaText)
 
-            val hargaDouble = harga / 100
 
-            uploadImageToFirebaseStorage(bitmap, namaPisang, kualitas, berat, hargaDouble)
+            uploadImageToFirebaseStorage(bitmap, namaPisang, kualitas, berat, harga)
         }
     }
 
@@ -479,7 +479,13 @@ class ProcessAddActivity : AppCompatActivity() {
     }
 
     private fun formatPrice(price: Float): String {
-        return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(price)
+        val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = "Rp"
+        numberFormat.decimalFormatSymbols = decimalFormatSymbols
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.minimumFractionDigits = 0
+        return numberFormat.format(price)
     }
 
     private fun showDialogReplace() {
@@ -535,6 +541,20 @@ class ProcessAddActivity : AppCompatActivity() {
         dialog.setContentText(message)
         dialog.setCancelable(false)
         dialog.setConfirmClickListener {
+            dialog.dismiss()
+            hideLoading()
+        }
+        dialog.show()
+        dialog.hideConfirmButton()
+    }
+
+    private fun showSuccessDialogAddBuyer(message: String) {
+        val dialog = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        dialog.setContentText(message)
+        dialog.setCancelable(false)
+        dialog.setConfirmClickListener {
+            val intent = Intent(this, SellerDashboardActivity::class.java)
+            startActivity(intent)
             dialog.dismiss()
             hideLoading()
         }

@@ -60,7 +60,6 @@
                 android:layout_marginStart="16dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView3"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardView3"
                 app:layout_constraintTop_toTopOf="@+id/cardView3">
 
@@ -95,7 +94,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Product Amount"
+                    android:text="Product Weight"
                     android:textColor="@color/color_4"
                     android:textSize="14sp" />
             </LinearLayout>
