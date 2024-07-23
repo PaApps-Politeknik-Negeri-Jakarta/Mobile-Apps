@@ -1,6 +1,7 @@
 package com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ class ProductAdapterSeller(private val products: List<Product>, private val clic
         val currentItem = products[position]
         holder.binding.apply {
             productNameSeller.text = currentItem.nama_pisang
+            productWeightSeller.text = currentItem.berat.toString()
             val radius = 8
             val requestOptions = RequestOptions()
                 .override(150, 150)
@@ -37,6 +39,14 @@ class ProductAdapterSeller(private val products: List<Product>, private val clic
                 .load(currentItem.image_url)
                 .apply(requestOptions)
                 .into(productImageSeller)
+
+            // Tampilkan lingkaran merah jika ada chat baru
+            if (currentItem.newChatCount > 0) {
+                chatIndicator.visibility = View.VISIBLE
+                chatIndicator.text = currentItem.newChatCount.toString()
+            } else {
+                chatIndicator.visibility = View.GONE
+            }
 
             root.setOnClickListener {
                 clickListener(currentItem)

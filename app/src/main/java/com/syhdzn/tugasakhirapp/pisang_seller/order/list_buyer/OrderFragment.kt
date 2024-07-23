@@ -88,9 +88,11 @@ class OrderFragment : Fragment() {
         mDatabase.child("orders").child(user.userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val orderCount = snapshot.childrenCount.toInt()
-                user.orderCount = orderCount
-                userList.add(user)
-                buyerAdapter.notifyDataSetChanged()
+                if (orderCount > 0) {
+                    user.orderCount = orderCount
+                    userList.add(user)
+                    buyerAdapter.notifyDataSetChanged()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

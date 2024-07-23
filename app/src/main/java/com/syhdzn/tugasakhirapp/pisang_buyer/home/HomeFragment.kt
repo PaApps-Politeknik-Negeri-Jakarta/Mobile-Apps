@@ -1,6 +1,10 @@
 package com.syhdzn.tugasakhirapp.pisang_buyer.home
 
+import android.animation.ObjectAnimator
+import android.animation.AnimatorListenerAdapter
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,14 +13,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -32,7 +33,6 @@ import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.ProductAdapter
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
-import com.syhdzn.tugasakhirapp.pisang_buyer.history.list_history.HistoryActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 
 class HomeFragment : Fragment() {
@@ -42,6 +42,7 @@ class HomeFragment : Fragment() {
     private lateinit var originalProductList: ArrayList<Product>
     private lateinit var firebaseRef: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
+    private val selectedFilters = mutableSetOf<String>()
 
     private val imageIds = listOf(
         R.drawable.banner_1,
@@ -81,7 +82,6 @@ class HomeFragment : Fragment() {
         fetchData()
         setupAction()
         loadUserData()
-        setupAction()
 
         setupCategoryFilter(binding.pisangAmbon, binding.clearPisangAmbon, "Pisang Ambon")
         setupCategoryFilter(binding.pisangUli, binding.clearPisangUli, "Pisang Uli")
@@ -92,32 +92,65 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupCategoryFilter(layout: LinearLayout, clearImage: ImageView, name: String) {
+        val color = Color.parseColor("#FFC354")
+        clearImage.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+        clearImage.tag = name
+
+
         layout.setOnClickListener {
-            filterProductsByName(name)
-            if (clearImage.visibility != View.VISIBLE) {
-                clearImage.visibility = View.VISIBLE
-                val rotate = AnimationUtils.loadAnimation(context, R.anim.rotate)
-                clearImage.startAnimation(rotate)
+            if (selectedFilters.contains(name)) {
+                selectedFilters.remove(name)
+                animateFilterRemove(clearImage)
+            } else {
+                selectedFilters.add(name)
+                animateFilterAdd(clearImage)
             }
-            clearImage.setOnClickListener {
-                clearImage.visibility = View.GONE
-                fetchData()
-            }
+            filterProducts()
         }
 
         clearImage.setOnClickListener {
-            clearImage.visibility = View.GONE
-            fetchData()
+            selectedFilters.remove(name)
+            animateFilterRemove(clearImage)
+            filterProducts()
         }
     }
+
+    private fun animateFilterAdd(clearImage: ImageView) {
+        clearImage.visibility = View.VISIBLE
+        val rotate = AnimationUtils.loadAnimation(context, R.anim.rotate)
+        clearImage.startAnimation(rotate)
+    }
+
+    private fun animateFilterRemove(clearImage: ImageView) {
+        val fadeOut = ObjectAnimator.ofFloat(clearImage, "alpha", 1f, 0f)
+        fadeOut.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: android.animation.Animator) {
+                if (!selectedFilters.contains(clearImage.tag.toString())) {
+                    clearImage.alpha = 1f
+                    clearImage.visibility = View.GONE
+                }
+            }
+        })
+        fadeOut.start()
+    }
+
+    private fun filterProducts() {
+        if (selectedFilters.isEmpty()) {
+            productList.clear()
+            productList.addAll(originalProductList)
+        } else {
+            productList.clear()
+            productList.addAll(originalProductList.filter { selectedFilters.contains(it.nama_pisang) })
+        }
+        binding.rvProduct.adapter?.notifyDataSetChanged()
+        Log.d("HomeFragment", "Filtered ${productList.size} products by filters: $selectedFilters")
+    }
+
     private fun setupAction() {
         binding.imageView9.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
-            binding.imageView9.setOnClickListener {
-                val intent = Intent(requireContext(), SearchActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-                startActivity(intent)
-            }
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
         }
     }
 
@@ -162,18 +195,13 @@ class HomeFragment : Fragment() {
                 snapshot.children.mapNotNullTo(productList) { it.getValue(Product::class.java) }
                 originalProductList.addAll(productList)
                 binding.rvProduct.adapter?.notifyDataSetChanged()
+                Log.d("HomeFragment", "Fetched ${productList.size} products")
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun filterProductsByName(name: String) {
-        productList.clear()
-        productList.addAll(originalProductList.filter { it.nama_pisang == name })
-        binding.rvProduct.adapter?.notifyDataSetChanged()
     }
 
     private fun observeCurrentPage() {

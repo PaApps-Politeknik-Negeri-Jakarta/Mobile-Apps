@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.databinding.ItemHistoryOrderDetailBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.history.OrderItem
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 class OrderDetailAdapter :
     ListAdapter<OrderItem, OrderDetailAdapter.OrderDetailViewHolder>(DiffCallback) {
@@ -32,7 +35,13 @@ class OrderDetailAdapter :
         }
 
         private fun formatPrice(price: Double): String {
-            return java.text.NumberFormat.getCurrencyInstance(java.util.Locale("id", "ID")).format(price)
+            val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+            val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+            decimalFormatSymbols.currencySymbol = "Rp"
+            numberFormat.decimalFormatSymbols = decimalFormatSymbols
+            numberFormat.maximumFractionDigits = 0
+            numberFormat.minimumFractionDigits = 0
+            return numberFormat.format(price)
         }
     }
 
