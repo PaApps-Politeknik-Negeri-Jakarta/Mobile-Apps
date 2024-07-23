@@ -17,12 +17,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
 import com.syhdzn.tugasakhirapp.pisang_buyer.chat.ChatActivity
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
 import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.payment.PaymentActivity
 import java.text.NumberFormat
@@ -82,8 +84,10 @@ class DetailProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Berhasil menambahkan ke keranjang", Toast.LENGTH_SHORT).show()
         }
         binding.cart.setOnClickListener {
-            val intent = Intent(this, CartFragment::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, BuyerDashboardActivity::class.java).apply {
+                putExtra("switchToFragment", "CartFragment")
+                putExtra("selectMenuItem", R.id.cart)
+            })
         }
         binding.back.setOnClickListener {
             onBackPressed()
@@ -147,14 +151,16 @@ class DetailProductActivity : AppCompatActivity() {
         val userId = getUserIdFromPreferences()
         val image = intent.getStringExtra("IMG") ?: ""
         val name = intent.getStringExtra("NAME") ?: ""
+        val weight = intent.getIntExtra("WEIGHT", 0)
+        val price = intent.getDoubleExtra("PRICE", 0.0)
 
         // Gunakan fullname yang sudah diterima dari Intent
         fullName?.let { userName ->
             checkChatRoomExistence(receiverId) { chatRoomId ->
                 if (chatRoomId.isNotEmpty()) {
-                    openChatActivity(chatRoomId, image, name, userName)
+                    openChatActivity(chatRoomId, image, name, weight, price, userName)
                 } else {
-                    createNewChatRoom(userId, receiverId, image, name, userName)
+                    createNewChatRoom(userId, receiverId, image, name, weight, price, userName)
                 }
             }
         }
@@ -215,7 +221,7 @@ class DetailProductActivity : AppCompatActivity() {
             })
     }
 
-    private fun createNewChatRoom(userId: String, receiverId: String, image: String, name: String, userName: String) {
+    private fun createNewChatRoom(userId: String, receiverId: String, image: String, name: String, weight: Int, price: Double, userName: String) {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val chatRoomId = firebaseRef.child("chats").push().key
 
@@ -231,7 +237,7 @@ class DetailProductActivity : AppCompatActivity() {
             firebaseRef.child("chats").child(chatRoomId).setValue(chatRoom).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("DetailActivity", "Chat room created successfully")
-                    openChatActivity(chatRoomId, image, name, userName)
+                    openChatActivity(chatRoomId, image, name, weight, price, userName)
                 } else {
                     Log.e("DetailActivity", "Failed to create chat room", task.exception)
                 }
@@ -241,12 +247,14 @@ class DetailProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun openChatActivity(chatRoomId: String, image: String, name: String, userName: String) {
+    private fun openChatActivity(chatRoomId: String, image: String, name: String, weight: Int, price: Double, userName: String) {
         val intent = Intent(this, ChatActivity::class.java).apply {
             putExtra("CHAT_ROOM_ID", chatRoomId)
             putExtra("IMG", image)
             putExtra("NAME", name)
             putExtra("FULL_NAME", userName)
+            putExtra("WEIGHT", weight)
+            putExtra("PRICE", price)
         }
         startActivity(intent)
     }

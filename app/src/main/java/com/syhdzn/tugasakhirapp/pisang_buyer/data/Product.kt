@@ -6,5 +6,7 @@ data class Product(
     val kualitas: String? = null,
     val berat: Int? = 0,
     val harga: Double? = 0.0,
-    val image_url: String? = null
+    val image_url: String? = null,
+    var newChatCount: Int = 0,
+    var hasNewChat: Boolean = false
 )

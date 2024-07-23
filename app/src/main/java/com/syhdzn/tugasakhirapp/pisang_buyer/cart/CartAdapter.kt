@@ -9,6 +9,7 @@ import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.databinding.ItemCartBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import java.text.NumberFormat
+import java.text.DecimalFormat
 import java.util.Locale
 
 class CartAdapter(
@@ -43,6 +44,11 @@ class CartAdapter(
         companion object {
             fun formatPrice(price: Float): String {
                 val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+                val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+                decimalFormatSymbols.currencySymbol = "Rp"
+                numberFormat.decimalFormatSymbols = decimalFormatSymbols
+                numberFormat.maximumFractionDigits = 0
+                numberFormat.minimumFractionDigits = 0
                 return numberFormat.format(price)
             }
         }

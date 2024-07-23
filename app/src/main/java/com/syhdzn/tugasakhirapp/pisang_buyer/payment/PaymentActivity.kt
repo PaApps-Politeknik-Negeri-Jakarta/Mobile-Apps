@@ -18,6 +18,7 @@ import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -152,7 +153,13 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun formatPrice(price: Double): String {
-        return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(price)
+        val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = "Rp"
+        numberFormat.decimalFormatSymbols = decimalFormatSymbols
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.minimumFractionDigits = 0
+        return numberFormat.format(price)
     }
 
     private fun getUserIdFromPreferences(): String {

@@ -1,12 +1,12 @@
 package com.syhdzn.tugasakhirapp.pisang_seller.chatSeller
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -14,21 +14,26 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
+import com.syhdzn.tugasakhirapp.databinding.FragmentChatRoomListBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.adapter.ChatRoomAdapter
+import com.syhdzn.tugasakhirapp.pisang_seller.dashboard.SellerDashboardActivity
 
 class ChatRoomListFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatRoomAdapter
     private val chatRooms = mutableListOf<ChatRoom>()
     private lateinit var productId: String
+    private var _binding: FragmentChatRoomListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_chat_room_list, container, false)
+        _binding = FragmentChatRoomListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,15 +41,23 @@ class ChatRoomListFragment : Fragment() {
 
         productId = arguments?.getString("productId") ?: return
 
-        recyclerView = view.findViewById(R.id.recyclerViewChatRooms)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewChatRooms.layoutManager = LinearLayoutManager(context)
 
         adapter = ChatRoomAdapter(requireContext(), chatRooms, productId) { chatRoom ->
         }
-        recyclerView.adapter = adapter
+        binding.recyclerViewChatRooms.adapter = adapter
 
         database = FirebaseDatabase.getInstance("https://tugasakhirapp-c5669-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         fetchChatRooms(productId)
+
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(requireContext(), SellerDashboardActivity::class.java).apply {
+                putExtra("switchToFragment", "ChatFragment")
+                putExtra("selectMenuItem", R.id.chatseller)
+                flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            }
+            startActivity(intent)
+        }
     }
 
     private fun fetchChatRooms(productId: String) {
@@ -65,7 +78,9 @@ class ChatRoomListFragment : Fragment() {
                 }
             })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
-
-
-
