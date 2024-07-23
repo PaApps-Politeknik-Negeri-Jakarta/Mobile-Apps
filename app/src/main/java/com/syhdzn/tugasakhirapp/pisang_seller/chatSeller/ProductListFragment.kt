@@ -63,10 +63,9 @@ class ProductListFragment : Fragment() {
                 for (childSnapshot in snapshot.children) {
                     val product = childSnapshot.getValue(Product::class.java)
                     if (product != null) {
-                        products.add(product)
+                        checkForChats(product)
                     }
                 }
-                adapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -74,8 +73,31 @@ class ProductListFragment : Fragment() {
             }
         })
     }
+
+    private fun checkForChats(product: Product) {
+        database.child("chats").orderByChild("receiverId").equalTo(product.id)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userIds = mutableSetOf<String>()
+                    for (chatSnapshot in snapshot.children) {
+                        val messagesSnapshot = chatSnapshot.child("messages")
+                        for (messageSnapshot in messagesSnapshot.children) {
+                            val senderId = messageSnapshot.child("senderId").getValue(String::class.java)
+                            senderId?.let {
+                                userIds.add(it)
+                            }
+                        }
+                    }
+                    if (userIds.isNotEmpty()) {
+                        product.newChatCount = userIds.size
+                        products.add(product)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle error
+                }
+            })
+    }
 }
-
-
-
-

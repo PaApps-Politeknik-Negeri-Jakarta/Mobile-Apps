@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import java.text.DecimalFormat
 
 class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
@@ -33,6 +34,11 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
 
     private fun formatPrice(price: Float): String {
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = "Rp"
+        numberFormat.decimalFormatSymbols = decimalFormatSymbols
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.minimumFractionDigits = 0
         return numberFormat.format(price)
     }
 
@@ -40,6 +46,8 @@ class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView
         val currentItem = productList[position]
         holder.binding.apply {
             tvProductName.text = currentItem.nama_pisang
+            tvProductWeight.text = "${currentItem.berat}g"
+
             val price = (currentItem.harga as? Number)?.toFloat() ?: 0f
             tvProductPrice.text = formatPrice(price)
 

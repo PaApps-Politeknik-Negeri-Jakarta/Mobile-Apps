@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.*
 import com.syhdzn.tugasakhirapp.databinding.ActivityOrderDetailBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.history.Order
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -90,7 +91,13 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun formatPrice(price: Double): String {
-        return NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(price)
+        val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+        val decimalFormatSymbols = (numberFormat as DecimalFormat).decimalFormatSymbols
+        decimalFormatSymbols.currencySymbol = "Rp"
+        numberFormat.decimalFormatSymbols = decimalFormatSymbols
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.minimumFractionDigits = 0
+        return numberFormat.format(price)
     }
 
     private fun getUserIdFromPreferences(): String {
