@@ -2,16 +2,18 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.search
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.widget.SearchView
-import com.google.firebase.database.*
-import com.syhdzn.tugasakhirapp.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.databinding.ActivitySearchBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import org.tensorflow.lite.Interpreter
@@ -19,8 +21,9 @@ import org.tensorflow.lite.flex.FlexDelegate
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.channels.FileChannel
 import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
+import java.util.Locale
 
 class SearchActivity : AppCompatActivity() {
 
@@ -189,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun preprocessText(text: String): FloatArray {
-        val cleanedText = text.toLowerCase().replace(Regex("[^a-zA-Z\\d\\s]"), "").split(" ")
+        val cleanedText = text.lowercase(Locale.getDefault()).replace(Regex("[^a-zA-Z\\d\\s]"), "").split(" ")
         val wordIndex = mutableMapOf<String, Int>()
         var index = 1
         cleanedText.forEach { word ->
@@ -232,7 +235,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fuzzyMatch(query: String, key: String): Int {
-        val levenshteinDistance = calculateLevenshteinDistance(query.toLowerCase(), key.toLowerCase())
+        val levenshteinDistance = calculateLevenshteinDistance(
+            query.lowercase(Locale.getDefault()),
+            key.lowercase(Locale.getDefault())
+        )
         return 100 - (levenshteinDistance * 100 / maxOf(query.length, key.length))
     }
 

@@ -11,7 +11,7 @@ import com.syhdzn.tugasakhirapp.databinding.ItemAddProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 class AddProductAdapter(
     private val productList: ArrayList<Product>,

@@ -1,6 +1,5 @@
 package com.syhdzn.tugasakhirapp.pisang_seller.order.detail_order_buyer
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -24,7 +23,6 @@ import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityBuyerDetailBinding
 import com.syhdzn.tugasakhirapp.pisang_seller.order.OrderItem
-import com.syhdzn.tugasakhirapp.pisang_seller.order.list_order_buyer.BuyerOrderActivity
 import java.text.NumberFormat
 import java.util.Locale
 

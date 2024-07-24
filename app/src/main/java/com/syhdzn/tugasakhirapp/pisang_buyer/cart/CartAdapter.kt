@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.databinding.ItemCartBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
-import java.text.NumberFormat
 import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.Locale
 
 class CartAdapter(

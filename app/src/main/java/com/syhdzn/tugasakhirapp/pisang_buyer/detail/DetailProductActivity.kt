@@ -18,12 +18,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import com.syhdzn.tugasakhirapp.R
+import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
 import com.syhdzn.tugasakhirapp.databinding.ActivityDetailProductBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
-import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
 import com.syhdzn.tugasakhirapp.pisang_buyer.chat.ChatActivity
-import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
-import com.syhdzn.tugasakhirapp.pisang_buyer.UserUtils
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
 import com.syhdzn.tugasakhirapp.pisang_buyer.payment.PaymentActivity

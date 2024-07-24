@@ -7,8 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Base64
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -24,7 +22,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityProcessAddBinding
-import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.camera.CameraSellerActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.dashboard.SellerDashboardActivity
 import org.tensorflow.lite.Interpreter

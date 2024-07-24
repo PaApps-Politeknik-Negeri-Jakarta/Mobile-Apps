@@ -3,8 +3,6 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.dashboard
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
@@ -13,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
+import com.syhdzn.tugasakhirapp.R
+import com.syhdzn.tugasakhirapp.databinding.ActivityBuyerDashboardBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.camera.CameraFragment
 import com.syhdzn.tugasakhirapp.pisang_buyer.cart.CartFragment
 import com.syhdzn.tugasakhirapp.pisang_buyer.home.HomeFragment
-import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.databinding.ActivityBuyerDashboardBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.user_acc.UserFragment
 
 class BuyerDashboardActivity : AppCompatActivity() {

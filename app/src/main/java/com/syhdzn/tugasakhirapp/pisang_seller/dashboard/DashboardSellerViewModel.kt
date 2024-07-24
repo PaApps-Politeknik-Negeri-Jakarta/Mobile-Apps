@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardSellerViewModel() : ViewModel() {
+class DashboardSellerViewModel : ViewModel() {
     private val _selectedItemId = MutableLiveData<Int>()
     val selectedItemId: LiveData<Int>
         get() = _selectedItemId

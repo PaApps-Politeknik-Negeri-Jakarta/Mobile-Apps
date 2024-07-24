@@ -12,12 +12,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityPaymentBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.CustomerViewModelFactory
-import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
-import com.syhdzn.tugasakhirapp.pisang_buyer.search.SearchActivity
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale

@@ -27,9 +27,9 @@ import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.databinding.ActivityLoginBinding
 import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
-import com.syhdzn.tugasakhirapp.register.RegisterActivity
 import com.syhdzn.tugasakhirapp.pisang_buyer.reset_pass.ResetPasswordActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.dashboard.SellerDashboardActivity
+import com.syhdzn.tugasakhirapp.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
