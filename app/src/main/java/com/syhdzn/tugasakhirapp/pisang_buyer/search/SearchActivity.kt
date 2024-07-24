@@ -25,6 +25,7 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.Locale
 
+
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
@@ -192,7 +193,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun preprocessText(text: String): FloatArray {
-        val cleanedText = text.lowercase(Locale.getDefault()).replace(Regex("[^a-zA-Z\\d\\s]"), "").split(" ")
+        val cleanedText = text.toLowerCase().replace(Regex("[^a-zA-Z\\d\\s]"), "").split(" ")
         val wordIndex = mutableMapOf<String, Int>()
         var index = 1
         cleanedText.forEach { word ->
@@ -235,10 +236,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fuzzyMatch(query: String, key: String): Int {
+
         val levenshteinDistance = calculateLevenshteinDistance(
             query.lowercase(Locale.getDefault()),
             key.lowercase(Locale.getDefault())
         )
+
+
         return 100 - (levenshteinDistance * 100 / maxOf(query.length, key.length))
     }
 

@@ -15,6 +15,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
+
 class PisangAdapter(private val pisangList: List<Pisang>) : RecyclerView.Adapter<PisangAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemProductBinding) : RecyclerView.ViewHolder(binding.root)

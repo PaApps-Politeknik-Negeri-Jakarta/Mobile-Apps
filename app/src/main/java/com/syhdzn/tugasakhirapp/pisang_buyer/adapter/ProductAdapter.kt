@@ -14,7 +14,7 @@ import com.syhdzn.tugasakhirapp.pisang_buyer.data.Product
 import com.syhdzn.tugasakhirapp.pisang_buyer.detail.DetailProductActivity
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 class ProductAdapter(private val productList: ArrayList<Product>) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
