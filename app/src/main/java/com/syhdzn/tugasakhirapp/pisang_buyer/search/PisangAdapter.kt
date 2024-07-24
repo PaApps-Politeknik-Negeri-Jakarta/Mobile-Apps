@@ -5,15 +5,16 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.syhdzn.tugasakhirapp.databinding.ItemProductBinding
-import com.syhdzn.tugasakhirapp.pisang_buyer.detail.DetailProductActivity
-import java.text.NumberFormat
-import java.text.DecimalFormat
-import java.util.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.syhdzn.tugasakhirapp.databinding.ItemProductBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.detail.DetailProductActivity
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
+
 
 class PisangAdapter(private val pisangList: List<Pisang>) : RecyclerView.Adapter<PisangAdapter.ViewHolder>() {
 

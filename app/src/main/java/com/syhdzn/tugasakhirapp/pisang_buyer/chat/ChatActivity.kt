@@ -8,13 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.database.*
-import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.MessageAdapter
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.syhdzn.tugasakhirapp.chat.data.Message
 import com.syhdzn.tugasakhirapp.databinding.ActivityChatBinding
+import com.syhdzn.tugasakhirapp.pisang_buyer.adapter.MessageAdapter
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
 

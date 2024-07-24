@@ -2,10 +2,10 @@ package com.syhdzn.tugasakhirapp.pisang_seller.chatSeller
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,7 +15,6 @@ import com.google.firebase.database.ValueEventListener
 import com.syhdzn.tugasakhirapp.R
 import com.syhdzn.tugasakhirapp.chat.data.ChatRoom
 import com.syhdzn.tugasakhirapp.databinding.FragmentChatRoomListBinding
-import com.syhdzn.tugasakhirapp.pisang_buyer.dashboard.BuyerDashboardActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.chatSeller.adapter.ChatRoomAdapter
 import com.syhdzn.tugasakhirapp.pisang_seller.dashboard.SellerDashboardActivity
 

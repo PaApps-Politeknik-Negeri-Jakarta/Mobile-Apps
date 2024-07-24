@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.syhdzn.tugasakhirapp.R
-import com.syhdzn.tugasakhirapp.pisang_seller.order.detail_order_buyer.BuyerDetailActivity
 import com.syhdzn.tugasakhirapp.pisang_seller.order.Order
+import com.syhdzn.tugasakhirapp.pisang_seller.order.detail_order_buyer.BuyerDetailActivity
 import java.text.NumberFormat
 import java.util.Locale
 

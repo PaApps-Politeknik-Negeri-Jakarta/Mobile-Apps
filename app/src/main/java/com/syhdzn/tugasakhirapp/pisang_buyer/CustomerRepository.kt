@@ -3,9 +3,7 @@ package com.syhdzn.tugasakhirapp.pisang_buyer
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.Query
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartDao
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartDatabase
 import com.syhdzn.tugasakhirapp.pisang_buyer.data.local.CartEntity
