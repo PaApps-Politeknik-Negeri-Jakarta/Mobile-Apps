@@ -36,11 +36,7 @@ class UserSellerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-<<<<<<< HEAD
-    ): View {
-=======
     ): View? {
->>>>>>> 860178405cbc057bae7e3ead4562daf4606bbea6
         binding = FragmentUserSellerBinding.inflate(inflater, container, false)
         return binding.root
     }
