@@ -225,7 +225,6 @@ class SearchActivity : AppCompatActivity() {
         val prediction = outputBuffer.float
 
         return if (prediction > 0.5) {
-            // Mencocokkan langsung dengan pengetahuan yang ada
             val bestMatch = pisangInfoList.keys.maxByOrNull { key ->
                 fuzzyMatch(inputText, key)
             }

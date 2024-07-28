@@ -364,8 +364,8 @@ class ProcessAddActivity : AppCompatActivity() {
                         showSuccessDialogBuyer("Pisang dengan kualitas Ripe")
                     }
                     "Overripe" -> {
-                        showSuccessDialogBuyer("Pisang dengan kualitas Overripe , Harga dikurangi Rp.2.000,00")
-                        hargaPrediksi -= 2000
+                        showErrorDialog("Pisang dengan kulitas Overripe tidak dapat dijual")
+                        hargaPrediksi = 0f
                     }
                     "Unripe" -> {
                         showErrorDialog("Pisang dengan kulitas Unripe tidak dapat dijual")

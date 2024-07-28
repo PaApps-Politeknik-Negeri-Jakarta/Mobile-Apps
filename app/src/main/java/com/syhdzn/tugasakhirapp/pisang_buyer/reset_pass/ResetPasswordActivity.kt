@@ -2,8 +2,11 @@ package com.syhdzn.tugasakhirapp.pisang_buyer.reset_pass
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -24,6 +27,7 @@ class ResetPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+    private var loadingDialog: SweetAlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +77,10 @@ class ResetPasswordActivity : AppCompatActivity() {
             val email = binding.edResetPassword.text.toString()
 
             if (email.isNotEmpty()) {
-                checkEmailAndResetPassword(email)
+                setupLoading()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    checkEmailAndResetPassword(email)
+                }, 2000)
             } else {
                 showEmptyDialog("Please enter your email")
             }
@@ -87,6 +94,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                     if (dataSnapshot.exists()) {
                         auth.sendPasswordResetEmail(email)
                             .addOnCompleteListener { task ->
+                                hideLoading()
                                 if (task.isSuccessful) {
                                     showSuccessDialog("Password reset email sent to $email")
                                 } else {
@@ -94,11 +102,13 @@ class ResetPasswordActivity : AppCompatActivity() {
                                 }
                             }
                     } else {
+                        hideLoading()
                         showInvalidDialog("Email is not registered")
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
+                    hideLoading()
                     showErrorDialog("Failed to check email: ${databaseError.message}")
                 }
             })
@@ -136,5 +146,19 @@ class ResetPasswordActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.setCustomImage(R.drawable.ic_warning)
         dialog.show()
+    }
+
+    private fun setupLoading() {
+        loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            show()
+        }
+    }
+
+    private fun hideLoading() {
+        loadingDialog?.hide()
+        loadingDialog = null
     }
 }
