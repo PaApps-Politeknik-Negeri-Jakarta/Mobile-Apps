@@ -2,6 +2,7 @@ package com.syhdzn.tugasakhirapp.register
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
@@ -29,6 +30,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+    private var loadingDialog: SweetAlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
+                // Handle back pressed action here
             }
         })
 
@@ -49,10 +51,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser(email: String, password: String, fullname: String, statusKu: String) {
+        setupLoading() // Show loading dialog
         databaseReference.child("users").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+                        hideLoading() // Hide loading dialog
                         showFailedDialog("Email has been registered")
                     } else {
                         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -66,6 +70,7 @@ class RegisterActivity : AppCompatActivity() {
                                         userData["role"] = statusKu
                                         databaseReference.child("users").child(userId).setValue(userData)
                                             .addOnCompleteListener { dbTask ->
+                                                hideLoading() // Hide loading dialog
                                                 if (dbTask.isSuccessful) {
                                                     showSuccessDialog("Registration successful")
                                                 } else {
@@ -73,9 +78,11 @@ class RegisterActivity : AppCompatActivity() {
                                                 }
                                             }
                                     } else {
+                                        hideLoading() // Hide loading dialog
                                         showFailedDialog("Failed to get user ID")
                                     }
                                 } else {
+                                    hideLoading() // Hide loading dialog
                                     showFailedDialog("Registration failed: ${task.exception?.message}")
                                 }
                             }
@@ -83,6 +90,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    hideLoading() // Hide loading dialog
                     showFailedDialog("Failed to check email availability")
                 }
             })
@@ -192,5 +200,17 @@ class RegisterActivity : AppCompatActivity() {
         edLoginPassword.setSelection(edLoginPassword.text.length)
     }
 
+    private fun setupLoading() {
+        loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).apply {
+            progressHelper.barColor = Color.parseColor("#06283D")
+            titleText = "Loading"
+            setCancelable(false)
+            show()
+        }
+    }
 
+    private fun hideLoading() {
+        loadingDialog?.hide()
+        loadingDialog = null
+    }
 }

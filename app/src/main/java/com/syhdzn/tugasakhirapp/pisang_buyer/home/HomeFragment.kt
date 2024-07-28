@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupCategoryFilter(layout: LinearLayout, clearImage: ImageView, name: String) {
-        val color = Color.parseColor("#FFC354")
+        val color = Color.parseColor("#FF0000")
         clearImage.setColorFilter(color, PorterDuff.Mode.SRC_IN)
         clearImage.tag = name
 

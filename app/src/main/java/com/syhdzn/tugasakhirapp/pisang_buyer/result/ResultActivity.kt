@@ -63,7 +63,7 @@ class ResultActivity : AppCompatActivity() {
 
         setupViewModel()
         displayResults()
-        loadWeightData()
+        loadWeightData() // Tambahkan ini untuk memuat data berat
         setupActions()
     }
 
@@ -99,7 +99,8 @@ class ResultActivity : AppCompatActivity() {
                 val weight = snapshot.getValue(Float::class.java) ?: 0f
                 if (weight != 0f) {
                     averageWeight = weight
-                    binding.tvWeight.text = "$weight grams"
+                    val weightInt = averageWeight.toInt()
+                    binding.tvWeight.text = "$weightInt grams"
                 } else {
                     showErrorDialog("Banana weight not found.")
                 }
@@ -196,8 +197,8 @@ class ResultActivity : AppCompatActivity() {
         }
 
         if (quality.equals("overripe", ignoreCase = true)) {
-            price -= 2000
-            showSuccessDialog("Banana is overripe, price reduced by 2000.")
+            showQualityErrorDialog("Banana cannot be added to cart because it is overripe.")
+            return
         }
 
         if (imageUriString != null) {
