@@ -140,6 +140,12 @@ class ResultActivity : AppCompatActivity() {
             return
         }
 
+        val jenisPisang = binding.tvJenis.text.toString()
+        if (jenisPisang == "Unknown") {
+            showTypeErrorDialog("Jenis pisang tidak terdeteksi. Prediksi harga tidak dapat dilakukan.")
+            return
+        }
+
         setupLoading()
 
         Handler(Looper.getMainLooper()).postDelayed({
